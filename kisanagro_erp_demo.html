@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kisan Agro — ERP System</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060e07;--sf:#0b1a0d;--sf2:#102214;--sf3:#16301c;--sf4:#1d4024;
+  --br:#1e3d22;--br2:#265c2c;--br3:#2f7535;
+  --gn:#2e8b2e;--gnl:#4caf50;--gng:rgba(46,139,46,.2);
+  --bl:#1565c0;--bll:#42a5f5;--blg:rgba(21,101,192,.15);
+  --tx:#e8f5e9;--tx2:#81c784;--tx3:#4a7f4e;
+  --rd:#ef5350;--yw:#ffca28;--cy:#26c6da;--or:#ff7043;--pu:#ab47bc;
+  --sw:248px;--hh:64px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);height:100vh;overflow:hidden;}
+
+/* ── LOGO SVG INLINE ── */
+.logo-svg{display:flex;align-items:center;gap:2px;flex-shrink:0;}
+.logo-leaf{font-size:22px;line-height:1;}
+.logo-text-kisan{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--gn);letter-spacing:1px;}
+.logo-text-agro{font-family:'Syne',sans-serif;font-weight:700;font-size:11px;color:var(--bl);letter-spacing:2px;display:block;margin-top:-3px;}
+.logo-block{display:flex;flex-direction:column;line-height:1;}
+
+/* ── LOGIN ── */
+#ls{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;background-image:radial-gradient(ellipse at 20% 50%,rgba(46,139,46,.12) 0%,transparent 55%),radial-gradient(ellipse at 80% 20%,rgba(21,101,192,.08) 0%,transparent 50%);}
+.lbox{background:var(--sf);border:1px solid var(--br2);border-radius:22px;padding:44px 40px;width:430px;max-width:95vw;text-align:center;box-shadow:0 30px 90px rgba(0,0,0,.6);}
+.llogo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px;}
+.llogo-leaf{font-size:48px;line-height:1;}
+.lkisan{font-family:'Syne',sans-serif;font-weight:800;font-size:36px;color:var(--gn);letter-spacing:2px;line-height:1;}
+.lagro{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--bl);letter-spacing:4px;margin-top:-4px;display:block;}
+.lsub{font-size:12px;color:var(--tx3);margin:8px 0 26px;}
+.ldivl{height:1px;background:var(--br);margin:16px 0;}
+.li{width:100%;background:var(--sf2);border:1px solid var(--br);border-radius:10px;padding:12px 15px;font-size:13px;color:var(--tx);font-family:'DM Sans',sans-serif;outline:none;margin-bottom:10px;transition:border-color .2s;}
+.li:focus{border-color:var(--gnl);}
+.lbtn{width:100%;background:linear-gradient(135deg,var(--gn),#1b5e20);border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;margin-top:4px;font-family:'DM Sans',sans-serif;}
+.lbtn:hover{opacity:.9;}
+.lhint{font-size:11px;color:var(--tx3);margin-top:12px;}
+.lroles{display:flex;gap:7px;margin-top:10px;}
+.lrole{flex:1;padding:8px 6px;border-radius:8px;font-size:11px;cursor:pointer;border:1px solid var(--br2);background:transparent;color:var(--tx2);transition:all .2s;font-family:'DM Sans',sans-serif;}
+.lrole:hover{border-color:var(--gnl);color:var(--gnl);}
+
+/* ── APP ── */
+#app{display:none;height:100vh;}
+
+/* ── HEADER ── */
+.hdr{position:fixed;top:0;left:0;right:0;height:var(--hh);z-index:100;background:var(--sf);border-bottom:1px solid var(--br2);display:flex;align-items:center;padding:0 18px;gap:14px;}
+.hlogo{display:flex;align-items:center;gap:8px;width:var(--sw);flex-shrink:0;}
+.hdivl{width:1px;height:26px;background:var(--br2);}
+.htag{font-size:10px;color:var(--tx3);line-height:1.5;}
+.htag b{color:var(--tx2);display:block;font-size:11px;}
+.hmid{flex:1;display:flex;align-items:center;gap:10px;}
+.hsrch{flex:1;max-width:340px;background:var(--sf2);border:1px solid var(--br);border-radius:9px;padding:8px 14px;font-size:12px;color:var(--tx);outline:none;font-family:'DM Sans',sans-serif;}
+.hsrch:focus{border-color:var(--gnl);}
+.hsrch::placeholder{color:var(--tx3);}
+.utab{padding:5px 12px;border-radius:7px;font-size:11px;font-weight:500;cursor:pointer;border:1px solid var(--br2);background:transparent;color:var(--tx2);transition:all .2s;white-space:nowrap;}
+.utab.on{background:var(--gn);border-color:var(--gn);color:#fff;}
+.utab:hover:not(.on){border-color:var(--gnl);color:var(--gnl);}
+.utabs{display:flex;gap:5px;flex-shrink:0;}
+.hright{display:flex;align-items:center;gap:9px;flex-shrink:0;}
+.hico{width:32px;height:32px;border-radius:7px;background:var(--sf2);border:1px solid var(--br);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;position:relative;}
+.hndot{position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:var(--rd);border:2px solid var(--sf);}
+.hav{width:32px;height:32px;border-radius:7px;background:linear-gradient(135deg,var(--gn),var(--bl));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;cursor:pointer;}
+.hun{font-size:12px;font-weight:600;text-align:right;}
+.hur{font-size:10px;color:var(--tx2);text-align:right;}
+.live{display:flex;align-items:center;gap:5px;background:rgba(76,175,80,.07);border:1px solid rgba(76,175,80,.18);padding:4px 9px;border-radius:20px;font-size:11px;color:var(--gnl);}
+.ldot{width:6px;height:6px;border-radius:50%;background:var(--gnl);animation:pp 1.5s infinite;}
+@keyframes pp{0%,100%{opacity:1}50%{opacity:.3}}
+.hclk{font-size:11px;color:var(--tx2);}
+
+/* ── LAYOUT ── */
+.abody{display:flex;height:100vh;padding-top:var(--hh);}
+.sb{position:fixed;top:var(--hh);left:0;bottom:0;width:var(--sw);background:var(--sf);border-right:1px solid var(--br2);display:flex;flex-direction:column;padding:14px 10px;overflow-y:auto;z-index:90;}
+.snav{margin-bottom:18px;}
+.slbl{font-size:9.5px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:1.2px;padding:0 9px;margin-bottom:5px;}
+.si{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--tx2);transition:all .15s;margin-bottom:2px;position:relative;}
+.si:hover{background:var(--sf2);color:var(--tx);}
+.si.on{background:rgba(46,139,46,.18);color:var(--gnl);}
+.si.on::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:3px;border-radius:2px;background:var(--gnl);}
+.sic{font-size:15px;width:18px;text-align:center;flex-shrink:0;}
+.sbdg{margin-left:auto;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:9px;}
+.sbot{margin-top:auto;padding-top:12px;border-top:1px solid var(--br);}
+
+/* ── MAIN ── */
+.mn{margin-left:var(--sw);flex:1;overflow-y:auto;padding:20px;}
+.pg{display:none;}.pg.on{display:block;}
+.pgh{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;}
+.pgt{font-family:'Syne',sans-serif;font-weight:700;font-size:19px;}
+.pgs{font-size:12px;color:var(--tx2);margin-top:2px;}
+.pgha{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* ── BUTTONS ── */
+.btn{padding:8px 13px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.bp{background:var(--gn);color:#fff;}.bp:hover{background:#1b5e20;}
+.bb{background:var(--bl);color:#fff;}.bb:hover{background:#0d47a1;}
+.bo{background:transparent;border:1px solid var(--br2);color:var(--tx);}.bo:hover{border-color:var(--gnl);color:var(--gnl);}
+.bsm{padding:5px 10px;font-size:11px;}
+.brd{background:var(--rd);color:#fff;}
+
+/* ── STATS ── */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.sc{background:var(--sf);border:1px solid var(--br2);border-radius:12px;padding:16px;transition:transform .2s;}
+.sc:hover{transform:translateY(-2px);}
+.slb{font-size:11px;color:var(--tx2);margin-bottom:6px;}
+.sv{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;margin-bottom:4px;}
+.sv.gn{color:var(--gnl);}
+.sv.bl{color:var(--bll);}
+.sv.rd{color:var(--rd);}
+.sv.yw{color:var(--yw);}
+.sv.cy{color:var(--cy);}
+.sch{font-size:11px;}.sch.up{color:var(--gnl)}.sch.dn{color:var(--rd)}
+
+/* ── CARDS ── */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.cg3{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:12px;}
+.cd{background:var(--sf);border:1px solid var(--br2);border-radius:12px;padding:16px;margin-bottom:12px;}
+.cd:last-child{margin-bottom:0;}
+.cdh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.cdt{font-size:13px;font-weight:600;}
+.cda{font-size:11px;color:var(--gnl);cursor:pointer;}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{text-align:left;padding:8px 10px;font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--br);}
+td{padding:9px 10px;border-bottom:1px solid var(--br);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.012);}
+.tb{font-weight:600;}
+
+/* ── BADGES ── */
+.bg{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:7px;font-size:10px;font-weight:600;}
+.bg.gn{background:rgba(76,175,80,.12);color:var(--gnl);}
+.bg.yw{background:rgba(255,202,40,.1);color:var(--yw);}
+.bg.rd{background:rgba(239,83,80,.1);color:var(--rd);}
+.bg.bl{background:rgba(66,165,245,.1);color:var(--bll);}
+.bg.cy{background:rgba(38,198,218,.1);color:var(--cy);}
+.bg.or{background:rgba(255,112,67,.1);color:var(--or);}
+.bg.pu{background:rgba(171,71,188,.1);color:var(--pu);}
+.bg.gy{background:rgba(120,144,156,.1);color:#90a4ae;}
+
+/* ── PROGRESS ── */
+.pb{height:5px;background:var(--br);border-radius:3px;overflow:hidden;}
+.pf{height:100%;border-radius:3px;}
+.pf.gn{background:linear-gradient(90deg,var(--gn),var(--gnl));}
+.pf.bl{background:linear-gradient(90deg,var(--bl),var(--bll));}
+.pf.yw{background:var(--yw);}
+.pf.rd{background:var(--rd);}
+
+/* ── UNIT CARDS ── */
+.ucrd{background:var(--sf2);border:1px solid var(--br);border-radius:10px;padding:14px;}
+.unm{font-size:12px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.spl{font-size:10px;font-weight:600;padding:2px 7px;border-radius:8px;}
+.spl.run{background:rgba(76,175,80,.15);color:var(--gnl);}
+.spl.warn{background:rgba(255,202,40,.12);color:var(--yw);}
+.spl.stop{background:rgba(239,83,80,.12);color:var(--rd);}
+.um{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;}
+.um .l{color:var(--tx2);}
+.um .v{font-weight:600;}
+
+/* ── PROCESS FLOW ── */
+.pflow{display:flex;align-items:center;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.pstep{background:var(--sf2);border:1px solid var(--br2);border-radius:8px;padding:8px 12px;font-size:11px;font-weight:600;text-align:center;white-space:nowrap;}
+.pstep.done{background:rgba(46,139,46,.15);border-color:var(--gn);color:var(--gnl);}
+.pstep.active{background:rgba(21,101,192,.15);border-color:var(--bl);color:var(--bll);}
+.pstep.pend{background:var(--sf2);color:var(--tx2);}
+.parrow{color:var(--tx3);font-size:16px;}
+
+/* ── ALERT ITEMS ── */
+.ai{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid var(--br);}
+.ai:last-child{border-bottom:none;}
+.adot{width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;}
+.atxt{font-size:11px;}
+.atm{font-size:10px;color:var(--tx3);margin-top:2px;}
+
+/* ── MODAL ── */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:500;align-items:center;justify-content:center;padding:16px;}
+.mo.on{display:flex;}
+.mb{background:var(--sf);border:1px solid var(--br2);border-radius:16px;padding:24px;width:560px;max-width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.7);}
+.mt{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;}
+.mc{cursor:pointer;color:var(--tx2);font-size:22px;line-height:1;}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px;}
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:9px;}
+.fl{font-size:11px;font-weight:600;color:var(--tx2);}
+.fi{background:var(--sf2);border:1px solid var(--br);border-radius:8px;padding:9px 11px;font-size:12px;color:var(--tx);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;width:100%;}
+.fi:focus{border-color:var(--gnl);}
+.ma{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;padding-top:12px;border-top:1px solid var(--br);}
+.fsec{font-size:10px;font-weight:700;color:var(--gnl);text-transform:uppercase;letter-spacing:.6px;margin:12px 0 7px;padding-bottom:5px;border-bottom:1px solid var(--br);}
+
+/* ── SETTINGS ── */
+.stabs{display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap;}
+.stab{padding:7px 13px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--br2);background:transparent;color:var(--tx2);transition:all .2s;}
+.stab.on{background:var(--gn);border-color:var(--gn);color:#fff;}
+.spnl{display:none;}.spnl.on{display:block;}
+.srow{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--br);}
+.srow:last-child{border-bottom:none;}
+.sw{font-size:13px;font-weight:500;}
+.ssub{font-size:11px;color:var(--tx2);margin-top:2px;}
+.tgl{position:relative;display:inline-flex;align-items:center;gap:7px;cursor:pointer;}
+.tgi{display:none;}
+.tgt{width:34px;height:18px;background:var(--br);border-radius:9px;transition:background .2s;position:relative;}
+.tgi:checked+.tgt{background:var(--gnl);}
+.tgt::after{content:'';position:absolute;width:12px;height:12px;border-radius:50%;background:#fff;top:3px;left:3px;transition:left .2s;}
+.tgi:checked+.tgt::after{left:19px;}
+.tcrd{background:var(--sf2);border:1px solid var(--br);border-radius:10px;padding:13px;display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+.tav{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;}
+.tnm{font-size:13px;font-weight:600;}
+.trl{font-size:11px;color:var(--tx2);margin-top:2px;}
+.tun{font-size:10px;color:var(--tx3);margin-top:1px;}
+.tact{margin-left:auto;display:flex;gap:5px;align-items:center;}
+
+/* ── INVOICE ── */
+.ivbox{background:#fff;color:#111;padding:36px;border-radius:12px;font-family:'DM Sans',sans-serif;max-width:720px;margin:0 auto;font-size:12px;}
+.ivhdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;padding-bottom:14px;border-bottom:3px solid #2e8b2e;}
+.ivco{font-size:19px;font-weight:800;color:#2e8b2e;}
+.ivkisan{color:#2e8b2e;font-size:22px;font-weight:800;font-family:'Syne',sans-serif;}
+.ivagro{color:#1565c0;font-size:14px;font-weight:700;font-family:'Syne',sans-serif;letter-spacing:3px;}
+.ivcodet{font-size:11px;color:#555;margin-top:4px;line-height:1.7;}
+.ivtit{font-size:24px;font-weight:800;color:#333;text-align:right;}
+.ivno{font-size:11px;color:#555;text-align:right;margin-top:3px;line-height:1.9;}
+.ivprts{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:14px;}
+.ivplbl{font-size:10px;font-weight:700;text-transform:uppercase;color:#888;margin-bottom:4px;}
+.ivpnm{font-size:13px;font-weight:700;color:#111;}
+.ivpdt{font-size:11px;color:#555;margin-top:2px;line-height:1.7;}
+.ivtbl{width:100%;border-collapse:collapse;margin-bottom:14px;}
+.ivtbl th{background:#2e8b2e;color:#fff;padding:8px 10px;text-align:left;font-size:11px;}
+.ivtbl td{padding:8px 10px;border-bottom:1px solid #eee;font-size:11px;}
+.ivtot{float:right;width:270px;}
+.ivtr{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;}
+.ivtr.fin{font-size:15px;font-weight:800;border-top:2px solid #2e8b2e;padding-top:8px;margin-top:4px;color:#2e8b2e;}
+.ivnt{font-size:11px;color:#555;margin-top:12px;padding:9px;background:#f1f8f1;border-radius:7px;border-left:3px solid #2e8b2e;line-height:1.8;}
+
+/* ── INNER TABS ── */
+.itbs{display:flex;border-bottom:1px solid var(--br);margin-bottom:0;}
+.itb{padding:8px 14px;font-size:12px;font-weight:500;cursor:pointer;color:var(--tx2);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;}
+.itb.on{color:var(--gnl);border-bottom-color:var(--gnl);}
+.itp{display:none;padding-top:12px;}.itp.on{display:block;}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--br2);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="ls">
+  <div class="lbox">
+    <div class="llogo">
+      <div class="llogo-leaf">🌿</div>
+      <div>
+        <div class="lkisan">KISAN</div>
+        <div class="lagro">AGRO</div>
+      </div>
+    </div>
+    <div class="lsub">ERP Management System · Palanpur, Gujarat · Est. 1986</div>
+    <div class="ldivl"></div>
+    <input class="li" type="text" placeholder="Username" value="rahul.patel">
+    <input class="li" type="password" placeholder="Password" value="••••••••">
+    <button class="lbtn" onclick="doLogin()">🌿 Login to Kisan Agro ERP</button>
+    <div class="lhint">🌱 Castor Oil · Derivatives · Groundnut · Export Since 1986</div>
+    <div class="lroles">
+      <button class="lrole" onclick="doLogin()">🏭 Production</button>
+      <button class="lrole" onclick="doLogin()">💰 Accounts</button>
+      <button class="lrole" onclick="doLogin()">🌍 Export</button>
+      <button class="lrole" onclick="doLogin()">📦 Store</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+<header class="hdr">
+  <div class="hlogo">
+    <div class="logo-svg">
+      <span class="logo-leaf">🌿</span>
+      <div class="logo-block">
+        <span class="logo-text-kisan">KISAN</span>
+        <span class="logo-text-agro">AGRO</span>
+      </div>
+    </div>
+    <div class="hdivl"></div>
+    <div class="htag"><b>ERP Portal</b>Kisan Agro Product Industries</div>
+  </div>
+  <div class="hmid">
+    <input class="hsrch" placeholder="🔍  Search batches, orders, shipments...">
+    <div class="utabs">
+      <div class="utab on" onclick="setUnit(this)">🏭 All Units</div>
+      <div class="utab" onclick="setUnit(this)">Unit 1 — Kisan Agro</div>
+      <div class="utab" onclick="setUnit(this)">Unit 2 — Oleochem</div>
+      <div class="utab" onclick="setUnit(this)">Unit 3 — Proteins</div>
+    </div>
+  </div>
+  <div class="hright">
+    <div class="live"><div class="ldot"></div>Live</div>
+    <div class="hclk" id="clock"></div>
+    <div class="hico" onclick="showPage('alerts',null)">🔔<div class="hndot"></div></div>
+    <div style="text-align:right"><div class="hun">Rahul Patel</div><div class="hur">Export Manager</div></div>
+    <div class="hav">RP</div>
+  </div>
+</header>
+<div class="abody">
+<aside class="sb">
+  <div class="snav">
+    <div class="slbl">Overview</div>
+    <div class="si on" onclick="showPage('dashboard',this)"><span class="sic">📊</span>Dashboard</div>
+    <div class="si" onclick="showPage('units',this)"><span class="sic">🏭</span>Processing Units</div>
+  </div>
+  <div class="snav">
+    <div class="slbl">Procurement</div>
+    <div class="si" onclick="showPage('procurement',this)"><span class="sic">🌱</span>Seed Procurement<span class="sbdg" style="background:var(--yw);color:#000">5</span></div>
+    <div class="si" onclick="showPage('purchase',this)"><span class="sic">🏪</span>Purchase Orders<span class="sbdg" style="background:var(--bl)">4</span></div>
+  </div>
+  <div class="snav">
+    <div class="slbl">Production</div>
+    <div class="si" onclick="showPage('production',this)"><span class="sic">⚙️</span>Processing Orders<span class="sbdg" style="background:var(--gn)">6</span></div>
+    <div class="si" onclick="showPage('batch',this)"><span class="sic">🧪</span>Batch Management</div>
+    <div class="si" onclick="showPage('inventory',this)"><span class="sic">📦</span>Inventory & Drums</div>
+    <div class="si" onclick="showPage('quality',this)"><span class="sic">✅</span>Quality Control<span class="sbdg" style="background:var(--yw);color:#000">3</span></div>
+  </div>
+  <div class="snav">
+    <div class="slbl">Sales & Export</div>
+    <div class="si" onclick="showPage('orders',this)"><span class="sic">🛒</span>Sales Orders<span class="sbdg" style="background:var(--gnl)">9</span></div>
+    <div class="si" onclick="showPage('export',this)"><span class="sic">🌍</span>Export Management<span class="sbdg" style="background:var(--bl)">3</span></div>
+    <div class="si" onclick="showPage('dispatch',this)"><span class="sic">🚚</span>Dispatch & Logistics</div>
+  </div>
+  <div class="snav">
+    <div class="slbl">Finance</div>
+    <div class="si" onclick="showPage('accounts',this)"><span class="sic">💰</span>Accounts & GST</div>
+    <div class="si" onclick="showPage('invoice',this)"><span class="sic">🧾</span>Invoice / Export Docs</div>
+    <div class="si" onclick="showPage('payroll',this)"><span class="sic">👷</span>Staff & Payroll</div>
+  </div>
+  <div class="snav">
+    <div class="slbl">Reports & System</div>
+    <div class="si" onclick="showPage('reports',this)"><span class="sic">📈</span>Reports & Analytics</div>
+    <div class="si" onclick="showPage('alerts',this)"><span class="sic">🔔</span>Alerts<span class="sbdg" style="background:var(--rd)">6</span></div>
+  </div>
+  <div class="sbot">
+    <div class="si" onclick="showPage('settings',this)"><span class="sic">⚙️</span>Settings & Team</div>
+    <div class="si" onclick="doLogout()"><span class="sic">🚪</span>Logout</div>
+  </div>
+</aside>
+<main class="mn">
+<!-- ══ DASHBOARD ══ -->
+<div id="page-dashboard" class="pg on">
+  <div class="pgh"><div><div class="pgt">Good Morning, Rahul Bhai! 🌿</div><div class="pgs">Monday, 2 June 2025 · Castor Oil & Derivatives · Est. 1986</div></div><div class="pgha"><button class="btn bo" onclick="openM('m-proc')">+ Procurement</button><button class="btn bp" onclick="openM('m-batch')">+ New Batch</button></div></div>
+  <div class="sg">
+    <div class="sc"><div class="slb">Today's Processing</div><div class="sv gn">820 MT</div><div class="sch up">↑ 8% vs yesterday</div></div>
+    <div class="sc"><div class="slb">Seed Stock (All Units)</div><div class="sv bl">4,240 MT</div><div class="sch">~5 days coverage</div></div>
+    <div class="sc"><div class="slb">Pending Export Orders</div><div class="sv cy">₹2.84 Cr</div><div class="sch up">3 active shipments</div></div>
+    <div class="sc"><div class="slb">QC Pending Batches</div><div class="sv yw">3</div><div class="sch">Awaiting approval</div></div>
+  </div>
+  <div class="cg3">
+    <div class="cd" style="margin-bottom:0">
+      <div class="cdh"><div class="cdt">🏭 Unit-wise Processing Status — Today</div><div class="cda" onclick="showPage('units',null)">Details →</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+        <div class="ucrd">
+          <div class="unm">Unit 1 — Kisan Agro<span class="spl run">● Running</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;">
+            <div style="background:var(--sf3);border-radius:7px;padding:9px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--gnl)">420 MT</div><div style="font-size:9px;color:var(--tx2)">Seeds Crushed</div></div>
+            <div style="background:var(--sf3);border-radius:7px;padding:9px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--gnl)">91%</div><div style="font-size:9px;color:var(--tx2)">Efficiency</div></div>
+          </div>
+          <div class="um"><span class="l">Output (Crude Oil)</span><span class="v">168 MT</span></div>
+          <div class="um"><span class="l">De-Oiled Cake</span><span class="v">210 MT</span></div>
+          <div class="um"><span class="l">Supervisor</span><span class="v">Kishore Desai</span></div>
+          <div class="pb" style="margin-top:8px"><div class="pf gn" style="width:91%"></div></div>
+        </div>
+        <div class="ucrd">
+          <div class="unm">Unit 2 — Oleochem<span class="spl run">● Running</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;">
+            <div style="background:var(--sf3);border-radius:7px;padding:9px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--bll)">220 MT</div><div style="font-size:9px;color:var(--tx2)">Refined Oil In</div></div>
+            <div style="background:var(--sf3);border-radius:7px;padding:9px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--gnl)">88%</div><div style="font-size:9px;color:var(--tx2)">Efficiency</div></div>
+          </div>
+          <div class="um"><span class="l">Derivatives Out</span><span class="v">185 MT</span></div>
+          <div class="um"><span class="l">Products</span><span class="v">DCOFA, HCO, RA</span></div>
+          <div class="um"><span class="l">Supervisor</span><span class="v">Anand Bhavsar</span></div>
+          <div class="pb" style="margin-top:8px"><div class="pf bl" style="width:88%"></div></div>
+        </div>
+        <div class="ucrd">
+          <div class="unm">Unit 3 — Proteins<span class="spl warn">⚠ Low Seed</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;">
+            <div style="background:var(--sf3);border-radius:7px;padding:9px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--yw)">180 MT</div><div style="font-size:9px;color:var(--tx2)">GN Processed</div></div>
+            <div style="background:var(--sf3);border-radius:7px;padding:9px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--yw)">74%</div><div style="font-size:9px;color:var(--tx2)">Efficiency</div></div>
+          </div>
+          <div class="um"><span class="l">GN Oil Output</span><span class="v">54 MT</span></div>
+          <div class="um"><span class="l">GN Cake</span><span class="v">90 MT</span></div>
+          <div class="um"><span class="l">Issue</span><span class="v" style="color:var(--yw)">⚠ GN Stock Low</span></div>
+          <div class="pb" style="margin-top:8px"><div class="pf yw" style="width:74%"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="cd" style="margin-bottom:0">
+      <div class="cdh"><div class="cdt">🔔 Live Alerts</div></div>
+      <div class="ai"><div class="adot" style="background:var(--rd)"></div><div><div class="atxt" style="color:var(--rd);font-weight:600">Critical: Unit 3 Groundnut stock &lt;2 days</div><div class="atm">20 mins ago</div></div></div>
+      <div class="ai"><div class="adot" style="background:var(--yw)"></div><div><div class="atxt">3 batches pending QC approval — Export hold</div><div class="atm">1 hr ago</div></div></div>
+      <div class="ai"><div class="adot" style="background:var(--bll)"></div><div><div class="atxt">New export order — USA client $48,000 Organic Castor</div><div class="atm">2 hrs ago</div></div></div>
+      <div class="ai"><div class="adot" style="background:var(--gnl)"></div><div><div class="atxt">Shipment SH-2241 — BL received from HDFC Bank</div><div class="atm">4 hrs ago</div></div></div>
+      <div class="ai"><div class="adot" style="background:var(--yw)"></div><div><div class="atxt">Hexane stock below 30% — reorder from HPCL</div><div class="atm">This morning</div></div></div>
+    </div>
+  </div>
+  <div class="cd">
+    <div class="cdh"><div class="cdt">📋 Recent Sales/Export Orders</div><div class="cda" onclick="showPage('orders',null)">View All →</div></div>
+    <table><thead><tr><th>Order ID</th><th>Buyer</th><th>Country</th><th>Product</th><th>Qty (MT)</th><th>Rate</th><th>Unit</th><th>Delivery</th><th>Status</th><th>Value</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td class="tb">#EX-1841</td><td>Sovereign Chemicals</td><td>🇺🇸 USA</td><td>Organic Castor Oil</td><td>200 MT</td><td>$1,450/MT</td><td>Unit 1</td><td>15 Jun</td><td><span class="bg bl">Docs Prep</span></td><td style="color:var(--gnl);font-weight:600">$2,90,000</td><td><button class="btn bo bsm" onclick="openM('m-order')">View</button></td></tr>
+      <tr><td class="tb">#EX-1840</td><td>Pharmako BV</td><td>🇳🇱 Netherlands</td><td>Hydrogenated Castor Oil</td><td>80 MT</td><td>$1,820/MT</td><td>Unit 2</td><td>10 Jun</td><td><span class="bg gn">Shipped</span></td><td style="color:var(--gnl);font-weight:600">$1,45,600</td><td><button class="btn bo bsm" onclick="openM('m-order')">View</button></td></tr>
+      <tr><td class="tb">#SO-4421</td><td>Asian Paints Ltd.</td><td>🇮🇳 India</td><td>Castor Oil FSG</td><td>150 MT</td><td>₹1,10,000/MT</td><td>Unit 1</td><td>05 Jun</td><td><span class="bg yw">Ready</span></td><td style="color:var(--gnl);font-weight:600">₹1.65 Cr</td><td><button class="btn bo bsm" onclick="openM('m-order')">View</button></td></tr>
+      <tr><td class="tb">#SO-4420</td><td>Pidilite Industries</td><td>🇮🇳 India</td><td>DCOFA (C18:2)</td><td>60 MT</td><td>₹1,85,000/MT</td><td>Unit 2</td><td>04 Jun</td><td><span class="bg gn">In Process</span></td><td style="color:var(--gnl);font-weight:600">₹1.11 Cr</td><td><button class="btn bo bsm" onclick="openM('m-order')">View</button></td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ══ PROCESSING UNITS ══ -->
+<div id="page-units" class="pg">
+  <div class="pgh"><div><div class="pgt">🏭 Processing Units</div><div class="pgs">Real-time status of all 3 production units</div></div><div class="pgha"><button class="btn bp" onclick="openM('m-batch')">+ Start Batch</button></div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+    <div class="cd" style="margin-bottom:0"><div class="cdh"><div class="cdt" style="color:var(--gnl)">● Unit 1 — Kisan Agro Product Industries</div><span class="bg gn">Running</span></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">
+        <div style="background:var(--sf2);border-radius:8px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--gnl)">420 MT</div><div style="font-size:9px;color:var(--tx2)">Seeds Today</div></div>
+        <div style="background:var(--sf2);border-radius:8px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--gnl)">91%</div><div style="font-size:9px;color:var(--tx2)">Efficiency</div></div>
+        <div style="background:var(--sf2);border-radius:8px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--gnl)">4</div><div style="font-size:9px;color:var(--tx2)">Active Lines</div></div>
+      </div>
+      <div class="um"><span class="l">Location</span><span class="v">N.H.14, Palanpur — 385001</span></div>
+      <div class="um"><span class="l">Products</span><span class="v">Crude Castor Oil, Refined Oil, De-Oiled Cake</span></div>
+      <div class="um"><span class="l">Crushing Capacity</span><span class="v">400 MT seeds/day</span></div>
+      <div class="um"><span class="l">Refining Capacity</span><span class="v">200 MT/day</span></div>
+      <div class="um"><span class="l">Staff</span><span class="v" style="color:var(--gnl)">142/155</span></div>
+      <div class="um"><span class="l">Supervisor</span><span class="v">Kishore Desai</span></div>
+      <div class="pb" style="margin-top:10px"><div class="pf gn" style="width:91%"></div></div>
+    </div>
+    <div class="cd" style="margin-bottom:0"><div class="cdh"><div class="cdt" style="color:var(--bll)">● Unit 2 — Kisan Oleochem & Derivatives</div><span class="bg bl">Running</span></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">
+        <div style="background:var(--sf2);border-radius:8px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--bll)">220 MT</div><div style="font-size:9px;color:var(--tx2)">Oil Processed</div></div>
+        <div style="background:var(--sf2);border-radius:8px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--gnl)">88%</div><div style="font-size:9px;color:var(--tx2)">Efficiency</div></div>
+        <div style="background:var(--sf2);border-radius:8px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--bll)">3</div><div style="font-size:9px;color:var(--tx2)">Reactors Active</div></div>
+      </div>
+      <div class="um"><span class="l">Location</span><span class="v">Palanpur Industrial Area</span></div>
+      <div class="um"><span class="l">Products</span><span class="v">DCOFA, HCO, Ricinoleic Acid, Blown Oil</span></div>
+      <div class="um"><span class="l">Derivatives Capacity</span><span class="v">250 MT/day</span></div>
+      <div class="um"><span class="l">Est. Year</span><span class="v">2011</span></div>
+      <div class="um"><span class="l">Staff</span><span class="v" style="color:var(--gnl)">88/95</span></div>
+      <div class="um"><span class="l">Supervisor</span><span class="v">Anand Bhavsar</span></div>
+      <div class="pb" style="margin-top:10px"><div class="pf bl" style="width:88%"></div></div>
+    </div>
+  </div>
+  <div class="cd">
+    <div class="cdh"><div class="cdt" style="color:var(--yw)">⚠ Unit 3 — Kisan Proteins Pvt. Ltd. (Groundnut Division)</div><span class="bg yw">Low Stock Issue</span></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;">
+      <div style="background:var(--sf2);border-radius:8px;padding:12px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--yw)">180 MT</div><div style="font-size:9px;color:var(--tx2)">GN Processed</div></div>
+      <div style="background:var(--sf2);border-radius:8px;padding:12px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--yw)">74%</div><div style="font-size:9px;color:var(--tx2)">Efficiency</div></div>
+      <div style="background:var(--sf2);border-radius:8px;padding:12px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--gnl)">54 MT</div><div style="font-size:9px;color:var(--tx2)">GN Oil Out</div></div>
+      <div style="background:var(--sf2);border-radius:8px;padding:12px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--gnl)">65/72</div><div style="font-size:9px;color:var(--tx2)">Staff Present</div></div>
+    </div>
+    <div class="um"><span class="l">Products</span><span class="v">Refined Groundnut Oil, Groundnut Bold/Java, GN De-Oiled Cake</span></div>
+    <div class="um"><span class="l">Capacity</span><span class="v">400 MT seeds/day (GN crushing + expelling)</span></div>
+    <div class="um"><span class="l">Issue</span><span class="v" style="color:var(--rd)">⚠ Groundnut seed stock &lt;2 days — Emergency procurement needed</span></div>
+    <div class="um"><span class="l">Supervisor</span><span class="v">Sanjay Trivedi</span></div>
+    <div class="pb" style="margin-top:10px"><div class="pf yw" style="width:74%"></div></div>
+  </div>
+  <div class="cd">
+    <div class="cdh"><div class="cdt">🔄 Processing Flow — Unit 1 (Castor)</div></div>
+    <div style="overflow-x:auto;padding-bottom:6px;">
+      <div class="pflow">
+        <div class="pstep done">🌱 Seed Receipt</div><div class="parrow">→</div>
+        <div class="pstep done">⚖️ Weighing & Grading</div><div class="parrow">→</div>
+        <div class="pstep active">🔨 Seed Crushing (Expeller)</div><div class="parrow">→</div>
+        <div class="pstep active">🧴 Crude Oil + Cake</div><div class="parrow">→</div>
+        <div class="pstep pend">💧 Solvent Extraction</div><div class="parrow">→</div>
+        <div class="pstep pend">🔬 Bleaching & Refining</div><div class="parrow">→</div>
+        <div class="pstep pend">✅ QC Testing</div><div class="parrow">→</div>
+        <div class="pstep pend">🛢️ Drum Filling</div><div class="parrow">→</div>
+        <div class="pstep pend">🚚 Dispatch/Export</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SEED PROCUREMENT ══ -->
+<div id="page-procurement" class="pg">
+  <div class="pgh"><div><div class="pgt">🌱 Seed Procurement</div><div class="pgs">Castor & Groundnut seed buying from farmers — lot tracking</div></div><div class="pgha"><button class="btn bp" onclick="openM('m-proc')">+ New Procurement</button></div></div>
+  <div class="sg">
+    <div class="sc"><div class="slb">Castor Seed Stock</div><div class="sv gn">2,840 MT</div><div class="sch">~7 days coverage</div></div>
+    <div class="sc"><div class="slb">Groundnut Seed Stock</div><div class="sv yw">380 MT</div><div class="sch dn">⚠ ~2 days only</div></div>
+    <div class="sc"><div class="slb">Procurement (June)</div><div class="sv bl">4,620 MT</div><div class="sch up">↑ 18% vs May</div></div>
+    <div class="sc"><div class="slb">Avg Castor Rate</div><div class="sv cy">₹6,280/MT</div><div class="sch">Market today</div></div>
+  </div>
+  <div class="cd">
+    <div class="cdh"><div class="cdt">Seed Procurement Register — June 2025</div><button class="btn bo bsm" onclick="openM('m-proc')">+ Add Lot</button></div>
+    <table><thead><tr><th>Lot ID</th><th>Seed Type</th><th>Farmer/Trader</th><th>Village/District</th><th>Qty (MT)</th><th>Rate (₹/MT)</th><th>Moisture %</th><th>Oil Content %</th><th>Date Received</th><th>Deliver To</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td class="tb">LOT-8821</td><td>Castor Seed (DCH-32)</td><td>Bhavesh Patel</td><td>Tharad, Banaskantha</td><td>180 MT</td><td>₹6,350</td><td>6.2%</td><td>48.4%</td><td>02/06</td><td>Unit 1</td><td><span class="bg gn">Accepted</span></td><td><button class="btn bo bsm">View</button></td></tr>
+      <tr><td class="tb">LOT-8820</td><td>Castor Seed (DCH-32)</td><td>Ratan Trader, Patan</td><td>Patan, Gujarat</td><td>240 MT</td><td>₹6,280</td><td>7.1%</td><td>47.8%</td><td>01/06</td><td>Unit 1</td><td><span class="bg gn">In Crushing</span></td><td><button class="btn bo bsm">View</button></td></tr>
+      <tr><td class="tb">LOT-8819</td><td>Castor Seed (GCH-4)</td><td>Prakash Agrawal</td><td>Deesa, Banaskantha</td><td>160 MT</td><td>₹6,180</td><td>8.5%</td><td>46.2%</td><td>01/06</td><td>Unit 1</td><td><span class="bg yw">High Moisture</span></td><td><button class="btn bo bsm">View</button></td></tr>
+      <tr><td class="tb">LOT-8818</td><td>Groundnut Bold-Java</td><td>Dilip Shah Traders</td><td>Junagadh, Gujarat</td><td>200 MT</td><td>₹58,500</td><td>5.8%</td><td>44.1%</td><td>31/05</td><td>Unit 3</td><td><span class="bg gn">In Processing</span></td><td><button class="btn bo bsm">View</button></td></tr>
+      <tr><td class="tb">LOT-8817</td><td>Groundnut Bold</td><td>Kiran Agencies, Rajkot</td><td>Rajkot, Gujarat</td><td>180 MT</td><td>₹57,800</td><td>6.2%</td><td>43.8%</td><td>30/05</td><td>Unit 3</td><td><span class="bg gn">Processed</span></td><td><button class="btn bo bsm">View</button></td></tr>
+    </tbody></table>
+  </div>
+  <div class="cd">
+    <div class="cdh"><div class="cdt">📊 Procurement Analytics — June 2025</div></div>
+    <table><thead><tr><th>Seed Type</th><th>Total Procured</th><th>Avg Rate</th><th>Avg Moisture</th><th>Avg Oil Content</th><th>Main Source District</th><th>Coverage Days</th></tr></thead>
+    <tbody>
+      <tr><td class="tb">Castor Seed (DCH-32)</td><td>2,480 MT</td><td>₹6,280/MT</td><td>7.2%</td><td>47.8%</td><td>Banaskantha, Patan</td><td><span class="bg gn">7 days</span></td></tr>
+      <tr><td class="tb">Castor Seed (GCH-4)</td><td>680 MT</td><td>₹6,100/MT</td><td>8.1%</td><td>46.0%</td><td>Mehsana, Sabarkantha</td><td><span class="bg gn">5 days</span></td></tr>
+      <tr><td class="tb">Groundnut Bold-Java</td><td>280 MT</td><td>₹58,200/MT</td><td>5.9%</td><td>44.0%</td><td>Junagadh, Rajkot</td><td><span class="bg rd">2 days ⚠</span></td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ══ PROCESSING ORDERS ══ -->
+<div id="page-production" class="pg">
+  <div class="pgh"><div><div class="pgt">⚙️ Processing Orders</div><div class="pgs">Seed crushing → extraction → refining → derivatives — all units</div></div><div class="pgha"><button class="btn bp" onclick="openM('m-batch')">+ New Processing Order</button></div></div>
+  <div class="sg">
+    <div class="sc"><div class="slb">Active Jobs</div><div class="sv gn">6</div><div class="sch up">3 per unit</div></div>
+    <div class="sc"><div class="slb">Today Output (Oil)</div><div class="sv bl">442 MT</div><div class="sch up">vs 408 yesterday</div></div>
+    <div class="sc"><div class="slb">Completed (June)</div><div class="sv cy">48</div><div class="sch">Batches done</div></div>
+    <div class="sc"><div class="slb">Batch Failures</div><div class="sv yw">2</div><div class="sch">Reprocessed</div></div>
+  </div>
+  <div class="cd">
+    <div class="cdh"><div class="cdt">Active Processing Jobs</div><button class="btn bo bsm" onclick="openM('m-batch')">+ Add Job</button></div>
+    <table><thead><tr><th>Job ID</th><th>Stage</th><th>Unit</th><th>Input Material</th><th>Input Qty</th><th>Output Product</th><th>Expected Output</th><th>Actual Output</th><th>Progress</th><th>Operator</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td class="tb">PJ-5541</td><td><span class="bg gn">Crushing</span></td><td>Unit 1</td><td>Castor Seeds LOT-8821</td><td>180 MT</td><td>Crude Castor Oil</td><td>72 MT</td><td>58 MT</td><td><div style="display:flex;align-items:center;gap:5px"><div style="flex:1;background:var(--br);border-radius:3px;height:5px"><div style="width:80%;height:100%;background:var(--gnl);border-radius:3px"></div></div><span style="font-size:10px;color:var(--tx2)">80%</span></div></td><td>Kishore Desai</td><td><span class="bg gn">Running</span></td><td><button class="btn bo bsm">Update</button></td></tr>
+      <tr><td class="tb">PJ-5542</td><td><span class="bg cy">Solvent Extr.</span></td><td>Unit 1</td><td>Expeller Cake</td><td>210 MT</td><td>Extracted Oil + DOC</td><td>18 MT oil</td><td>12 MT</td><td><div style="display:flex;align-items:center;gap:5px"><div style="flex:1;background:var(--br);border-radius:3px;height:5px"><div style="width:67%;height:100%;background:var(--cy);border-radius:3px"></div></div><span style="font-size:10px;color:var(--tx2)">67%</span></div></td><td>Suresh Nayak</td><td><span class="bg gn">Running</span></td><td><button class="btn bo bsm">Update</button></td></tr>
+      <tr><td class="tb">PJ-5543</td><td><span class="bg bl">Refining</span></td><td>Unit 1</td><td>Crude Castor Oil</td><td>120 MT</td><td>Refined Castor Oil</td><td>112 MT</td><td>88 MT</td><td><div style="display:flex;align-items:center;gap:5px"><div style="flex:1;background:var(--br);border-radius:3px;height:5px"><div style="width:78%;height:100%;background:var(--bll);border-radius:3px"></div></div><span style="font-size:10px;color:var(--tx2)">78%</span></div></td><td>Mahesh Parmar</td><td><span class="bg gn">Running</span></td><td><button class="btn bo bsm">Update</button></td></tr>
+      <tr><td class="tb">PJ-5544</td><td><span class="bg pu">Hydrogenation</span></td><td>Unit 2</td><td>Refined Castor Oil</td><td>80 MT</td><td>Hydrogenated Castor Oil</td><td>78 MT</td><td>42 MT</td><td><div style="display:flex;align-items:center;gap:5px"><div style="flex:1;background:var(--br);border-radius:3px;height:5px"><div style="width:54%;height:100%;background:var(--pu);border-radius:3px"></div></div><span style="font-size:10px;color:var(--tx2)">54%</span></div></td><td>Anand Bhavsar</td><td><span class="bg gn">Running</span></td><td><button class="btn bo bsm">Update</button></td></tr>
+      <tr><td class="tb">PJ-5545</td><td><span class="bg or">Dehydration</span></td><td>Unit 2</td><td>Castor Oil (Technical)</td><td>60 MT</td><td>DCOFA (C18:2)</td><td>54 MT</td><td>28 MT</td><td><div style="display:flex;align-items:center;gap:5px"><div style="flex:1;background:var(--br);border-radius:3px;height:5px"><div style="width:52%;height:100%;background:var(--or);border-radius:3px"></div></div><span style="font-size:10px;color:var(--tx2)">52%</span></div></td><td>Ravi Joshi</td><td><span class="bg gn">Running</span></td><td><button class="btn bo bsm">Update</button></td></tr>
+      <tr><td class="tb">PJ-5546</td><td><span class="bg yw">GN Crushing</span></td><td>Unit 3</td><td>Groundnut Seeds LOT-8818</td><td>200 MT</td><td>Refined GN Oil + Cake</td><td>88 MT</td><td>54 MT</td><td><div style="display:flex;align-items:center;gap:5px"><div style="flex:1;background:var(--br);border-radius:3px;height:5px"><div style="width:61%;height:100%;background:var(--yw);border-radius:3px"></div></div><span style="font-size:10px;color:var(--tx2)">61%</span></div></td><td>Sanjay Trivedi</td><td><span class="bg yw">Running</span></td><td><button class="btn bo bsm">Update</button></td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ══ BATCH MANAGEMENT ══ -->
+<div id="page-batch" class="pg">
+  <div class="pgh"><div><div class="pgt">🧪 Batch Management</div><div class="pgs">Track each oil batch from processing to QC to dispatch</div></div><div class="pgha"><button class="btn bp" onclick="openM('m-batch')">+ Create Batch</button></div></div>
+  <div class="sg">
+    <div class="sc"><div class="slb">Active Batches</div><div class="sv gn">12</div><div class="sch">All units</div></div>
+    <div class="sc"><div class="slb">Pending QC</div><div class="sv yw">3</div><div class="sch">Awaiting lab</div></div>
+    <div class="sc"><div class="slb">QC Passed (June)</div><div class="sv bl">44</div><div class="sch">Ready/dispatched</div></div>
+    <div class="sc"><div class="slb">Rejected</div><div class="sv rd">2</div><div class="sch">Reprocessing</div></div>
+  </div>
+  <div class="cd">
+    <div class="cdh"><div class="cdt">Batch Register — June 2025</div><button class="btn bo bsm" onclick="openM('m-batch')">+ New Batch</button></div>
+    <table><thead><tr><th>Batch ID</th><th>Product</th><th>Unit</th><th>Processing Job</th><th>Qty (MT)</th><th>Drums/Tanker</th><th>Grade</th><th>Processing Date</th><th>QC Status</th><th>Export/DOM</th><th>Linked Order</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td class="tb">BT-6641</td><td>Castor Oil — Organic</td><td>Unit 1</td><td>PJ-5543</td><td>88 MT</td><td>440 × 200L Drums</td><td>USDA Organic</td><td>01/06</td><td><span class="bg yw">QC Pending</span></td><td><span class="bg bl">Export</span></td><td>#EX-1841</td><td><button class="btn bo bsm">View</button></td></tr>
+      <tr><td class="tb">BT-6640</td><td>Castor Oil FSG</td><td>Unit 1</td><td>PJ-5541</td><td>120 MT</td><td>600 × 200L Drums</td><td>First Special Grade</td><td>01/06</td><td><span class="bg gn">QC Passed ✓</span></td><td><span class="bg gn">Domestic</span></td><td>#SO-4421</td><td><button class="btn bo bsm">View</button></td></tr>
+      <tr><td class="tb">BT-6639</td><td>Hydrogenated Castor Oil</td><td>Unit 2</td><td>PJ-5544</td><td>42 MT</td><td>1,050 × 40kg Bags</td><td>Pharma Grade</td><td>31/05</td><td><span class="bg yw">QC Pending</span></td><td><span class="bg bl">Export</span></td><td>#EX-1840</td><td><button class="btn bo bsm">View</button></td></tr>
+      <tr><td class="tb">BT-6638</td><td>DCOFA (C18:2)</td><td>Unit 2</td><td>PJ-5545</td><td>28 MT</td><td>140 × 200L Drums</td><td>Industrial Grade</td><td>31/05</td><td><span class="bg gn">QC Passed ✓</span></td><td><span class="bg gn">Domestic</span></td><td>#SO-4420</td><td><button class="btn bo bsm">View</button></td></tr>
+      <tr><td class="tb">BT-6637</td><td>Refined GN Oil</td><td>Unit 3</td><td>PJ-5546</td><td>54 MT</td><td>Tanker (2 × 27 MT)</td><td>Refined Edible</td><td>31/05</td><td><span class="bg rd">QC Failed ✗</span></td><td><span class="bg gn">Domestic</span></td><td>#SO-4419</td><td><button class="btn bo bsm">Reprocess</button></td></tr>
+      <tr><td class="tb">BT-6636</td><td>De-Oiled Castor Cake</td><td>Unit 1</td><td>PJ-5542</td><td>195 MT</td><td>Bulk Bags (50 kg)</td><td>Fertilizer Grade</td><td>30/05</td><td><span class="bg gn">QC Passed ✓</span></td><td><span class="bg gn">Domestic</span></td><td>#SO-4418</td><td><button class="btn bo bsm">View</button></td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ══ INVENTORY ══ -->
+<div id="page-inventory" class="pg">
+  <div class="pgh"><div><div class="pgt">📦 Inventory & Drums/Tanks</div><div class="pgs">Seeds, oil stock, chemicals, packaging — all units consolidated</div></div><div class="pgha"><button class="btn bo" onclick="openM('m-stk')">+ Stock Entry</button><button class="btn bp" onclick="openM('m-pur')">Raise Purchase</button></div></div>
+  <div class="sg">
+    <div class="sc"><div class="slb">Castor Seed Stock</div><div class="sv gn">2,840 MT</div><div class="sch">Unit 1</div></div>
+    <div class="sc"><div class="slb">Groundnut Seed</div><div class="sv rd">380 MT</div><div class="sch dn">⚠ Critical low</div></div>
+    <div class="sc"><div class="slb">Finished Oil Stock</div><div class="sv bl">842 MT</div><div class="sch">Ready dispatch</div></div>
+    <div class="sc"><div class="slb">Chemicals Stock</div><div class="sv cy">Adequate</div><div class="sch">Hexane 30% low</div></div>
+  </div>
+  <div class="cd">
+    <div class="cdh"><div class="cdt">Raw Material & Chemical Inventory</div><button class="btn bo bsm" onclick="openM('m-stk')">+ Add Stock</button></div>
+    <table><thead><tr><th>Material</th><th>Unit 1</th><th>Unit 2</th><th>Unit 3</th><th>Total</th><th>Unit</th><th>Reorder Level</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td class="tb">Castor Seeds (DCH-32)</td><td>2,840 MT</td><td>—</td><td>—</td><td>2,840 MT</td><td>MT</td><td>1,000 MT</td><td><span class="bg gn">OK</span></td><td><button class="btn bo bsm" onclick="openM('m-proc')">Procure</button></td></tr>
+      <tr><td class="tb">Groundnut Seeds Bold</td><td>—</td><td>—</td><td style="color:var(--rd);font-weight:600">380 MT ⚠</td><td>380 MT</td><td>MT</td><td>800 MT</td><td><span class="bg rd">Critical</span></td><td><button class="btn brd bsm" onclick="openM('m-proc')">Urgent!</button></td></tr>
+      <tr><td class="tb">Hexane (Solvent)</td><td style="color:var(--yw);font-weight:600">48 KL ⚠</td><td>—</td><td>—</td><td>48 KL</td><td>KL</td><td>100 KL</td><td><span class="bg yw">Low</span></td><td><button class="btn bo bsm" onclick="openM('m-pur')">Reorder</button></td></tr>
+      <tr><td class="tb">Bleaching Earth</td><td>82 MT</td><td>45 MT</td><td>28 MT</td><td>155 MT</td><td>MT</td><td>60 MT</td><td><span class="bg gn">OK</span></td><td><button class="btn bo bsm" onclick="openM('m-stk')">Update</button></td></tr>
+      <tr><td class="tb">Activated Carbon</td><td>14 MT</td><td>8 MT</td><td>5 MT</td><td>27 MT</td><td>MT</td><td>15 MT</td><td><span class="bg yw">Low</span></td><td><button class="btn bo bsm" onclick="openM('m-pur')">Reorder</button></td></tr>
+      <tr><td class="tb">Caustic Soda (NaOH)</td><td>22 MT</td><td>18 MT</td><td>10 MT</td><td>50 MT</td><td>MT</td><td>20 MT</td><td><span class="bg gn">OK</span></td><td><button class="btn bo bsm" onclick="openM('m-stk')">Update</button></td></tr>
+      <tr><td class="tb">200L Steel Drums</td><td>1,840 pcs</td><td>620 pcs</td><td>—</td><td>2,460 pcs</td><td>pcs</td><td>1,000 pcs</td><td><span class="bg gn">OK</span></td><td><button class="btn bo bsm" onclick="openM('m-stk')">Update</button></td></tr>
+      <tr><td class="tb">HDPE 50kg Bags (Cake)</td><td>12,000 pcs</td><td>—</td><td>8,000 pcs</td><td>20,000 pcs</td><td>pcs</td><td>5,000 pcs</td><td><span class="bg gn">OK</span></td><td><button class="btn bo bsm" onclick="openM('m-stk')">Update</button></td></tr>
+    </tbody></table>
+  </div>
+</div>
+<!-- ══ QUALITY CONTROL ══ -->
+<div id="page-quality" class="pg">
+  <div class="pgh"><div><div class="pgt">✅ Quality Control</div><div class="pgs">Lab testing — FFA, Moisture, Colour, Viscosity, Iodine Value</div></div><div class="pgha"><button class="btn bp" onclick="openM('m-qc')">+ New QC Entry</button></div></div>
+  <div class="sg">
+    <div class="sc"><div class="slb">Tests Today</div><div class="sv gn">14</div><div class="sch">All units</div></div>
+    <div class="sc"><div class="slb">Pass Rate</div><div class="sv bl">86%</div><div class="sch up">↑ vs 81% last week</div></div>
+    <div class="sc"><div class="slb">Batches Failed</div><div class="sv rd">2</div><div class="sch">Reprocessing</div></div>
+    <div class="sc"><div class="slb">Export Hold</div><div class="sv yw">3</div><div class="sch">QC pending</div></div>
+  </div>
+  <div class="cd">
+    <div class="cdh"><div class="cdt">QC Test Records — Today</div><button class="btn bo bsm" onclick="openM('m-qc')">+ Add Test</button></div>
+    <table><thead><tr><th>Batch ID</th><th>Product</th><th>Unit</th><th>FFA %</th><th>Moisture %</th><th>Colour (Gardner)</th><th>Viscosity (cP)</th><th>Iodine Value</th><th>Sp. Gravity</th><th>QC By</th><th>Cert.</th><th>Result</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td class="tb">BT-6641</td><td>Organic Castor Oil</td><td>Unit 1</td><td>0.8% ✓</td><td>0.12% ✓</td><td>3 ✓</td><td>920 cP ✓</td><td>84.2 ✓</td><td>0.957 ✓</td><td>Dr. Nilesh Shah</td><td><span class="bg gn">USDA Organic</span></td><td><span class="bg yw">In Lab</span></td><td><button class="btn bo bsm">Update</button></td></tr>
+      <tr><td class="tb">BT-6640</td><td>Castor Oil FSG</td><td>Unit 1</td><td>0.6% ✓</td><td>0.10% ✓</td><td>4 ✓</td><td>950 cP ✓</td><td>83.8 ✓</td><td>0.958 ✓</td><td>Dr. Nilesh Shah</td><td><span class="bg bl">ISO 9001</span></td><td><span class="bg gn">PASS</span></td><td><button class="btn bo bsm">Cert.</button></td></tr>
+      <tr><td class="tb">BT-6639</td><td>Hydrogenated CO</td><td>Unit 2</td><td>2.1% ✓</td><td>0.15% ✓</td><td>—</td><td>Solid ✓</td><td>3.0 ✓</td><td>1.040 ✓</td><td>Priya Bhatt</td><td><span class="bg pu">Pharma</span></td><td><span class="bg yw">In Lab</span></td><td><button class="btn bo bsm">Update</button></td></tr>
+      <tr><td class="tb">BT-6637</td><td>Refined GN Oil</td><td>Unit 3</td><td>0.12% ✓</td><td>0.08% ✓</td><td>1 ✓</td><td>68 cP ✗</td><td>102 ✓</td><td>0.912 ✓</td><td>Suresh Mehta</td><td><span class="bg gn">FSSAI</span></td><td><span class="bg rd">FAIL — Viscosity</span></td><td><button class="btn bo bsm">Reprocess</button></td></tr>
+      <tr><td class="tb">BT-6636</td><td>De-Oiled Castor Cake</td><td>Unit 1</td><td>—</td><td>8.4% ✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Suresh Mehta</td><td><span class="bg gn">Fertilizer</span></td><td><span class="bg gn">PASS</span></td><td><button class="btn bo bsm">Cert.</button></td></tr>
+    </tbody></table>
+  </div>
+  <div class="cd">
+    <div class="cdh"><div class="cdt">QC Standards Reference (BIS / Export Norms)</div></div>
+    <table><thead><tr><th>Product</th><th>Max FFA %</th><th>Max Moisture %</th><th>Max Colour</th><th>Viscosity Range</th><th>Certification</th><th>Standard</th></tr></thead>
+    <tbody>
+      <tr><td class="tb">Castor Oil FSG (First Special Grade)</td><td>1.0%</td><td>0.15%</td><td>Gardner 5</td><td>900–1000 cP</td><td><span class="bg bl">IS 1299</span></td><td>BIS / Export</td></tr>
+      <tr><td class="tb">Castor Oil — Organic</td><td>1.0%</td><td>0.15%</td><td>Gardner 5</td><td>900–1000 cP</td><td><span class="bg gn">USDA Organic NOP</span></td><td>USDA / EU 834</td></tr>
+      <tr><td class="tb">Hydrogenated Castor Oil</td><td>3.0%</td><td>0.20%</td><td>—</td><td>Solid (MP 85–90°C)</td><td><span class="bg pu">IP / USP</span></td><td>Pharma Grade</td></tr>
+      <tr><td class="tb">DCOFA (C18:2)</td><td>2.0%</td><td>0.20%</td><td>Gardner 7</td><td>Industrial</td><td><span class="bg cy">COA</span></td><td>Industrial</td></tr>
+      <tr><td class="tb">Refined GN Oil</td><td>0.15%</td><td>0.10%</td><td>Lovibond 2R</td><td>60–80 cP</td><td><span class="bg gn">FSSAI</span></td><td>IS 2969</td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ══ SALES ORDERS ══ -->
+<div id="page-orders" class="pg">
+  <div class="pgh"><div><div class="pgt">🛒 Sales Orders</div><div class="pgs">Domestic + Export orders — all products</div></div><div class="pgha"><button class="btn bo">Export CSV</button><button class="btn bp" onclick="openM('m-order')">+ New Order</button></div></div>
+  <div class="sg">
+    <div class="sc"><div class="slb">Orders (June)</div><div class="sv gn">22</div><div class="sch up">↑ vs 18 last month</div></div>
+    <div class="sc"><div class="slb">Domestic Value</div><div class="sv bl">₹4.82 Cr</div><div class="sch up">↑ 12%</div></div>
+    <div class="sc"><div class="slb">Export Value</div><div class="sv cy">$6,84,000</div><div class="sch up">↑ 22%</div></div>
+    <div class="sc"><div class="slb">Pending Dispatch</div><div class="sv yw">6</div><div class="sch">Action needed</div></div>
+  </div>
+  <div class="cd">
+    <div class="cdh"><div class="cdt">All Orders — June 2025</div></div>
+    <div class="itbs">
+      <div class="itb on" onclick="switchItab(this,'it-dom')">🇮🇳 Domestic</div>
+      <div class="itb" onclick="switchItab(this,'it-exp')">🌍 Export</div>
+    </div>
+    <div id="it-dom" class="itp on">
+      <table><thead><tr><th>Order ID</th><th>Customer</th><th>Industry</th><th>Product</th><th>Qty (MT)</th><th>Rate/MT</th><th>Due</th><th>Status</th><th>Value</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td class="tb">#SO-4421</td><td>Asian Paints Ltd., Mumbai</td><td>Paint</td><td>Castor Oil FSG</td><td>150 MT</td><td>₹1,10,000</td><td>05/06</td><td><span class="bg yw">Ready Dispatch</span></td><td style="color:var(--gnl);font-weight:600">₹1,65,00,000</td><td><button class="btn bo bsm" onclick="openM('m-inv')">Invoice</button></td></tr>
+        <tr><td class="tb">#SO-4420</td><td>Pidilite Industries, Mumbai</td><td>Adhesive</td><td>DCOFA (C18:2)</td><td>60 MT</td><td>₹1,85,000</td><td>04/06</td><td><span class="bg gn">In Process</span></td><td style="color:var(--gnl);font-weight:600">₹1,11,00,000</td><td><button class="btn bo bsm" onclick="openM('m-inv')">Invoice</button></td></tr>
+        <tr><td class="tb">#SO-4419</td><td>Shalimar Paints, Howrah</td><td>Paint</td><td>Refined Castor Oil</td><td>80 MT</td><td>₹1,05,000</td><td>06/06</td><td><span class="bg gn">In Process</span></td><td style="color:var(--gnl);font-weight:600">₹84,00,000</td><td><button class="btn bo bsm" onclick="openM('m-inv')">Invoice</button></td></tr>
+        <tr><td class="tb">#SO-4418</td><td>Iffco Tokio, Delhi</td><td>Fertilizer</td><td>De-Oiled Castor Cake</td><td>400 MT</td><td>₹12,000</td><td>03/06</td><td><span class="bg gn">Dispatched ✓</span></td><td style="color:var(--gnl);font-weight:600">₹48,00,000</td><td><button class="btn bo bsm" onclick="openM('m-inv')">Invoice</button></td></tr>
+        <tr><td class="tb">#SO-4417</td><td>Kansai Nerolac, Pune</td><td>Paint</td><td>Blown Castor Oil</td><td>40 MT</td><td>₹1,45,000</td><td>08/06</td><td><span class="bg bl">New Order</span></td><td style="color:var(--gnl);font-weight:600">₹58,00,000</td><td><button class="btn bo bsm" onclick="openM('m-inv')">Invoice</button></td></tr>
+      </tbody></table>
+    </div>
+    <div id="it-exp" class="itp">
+      <table><thead><tr><th>Order ID</th><th>Buyer</th><th>Country</th><th>Product</th><th>Qty (MT)</th><th>Rate ($/MT)</th><th>Incoterm</th><th>Port</th><th>Status</th><th>Value ($)</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td class="tb">#EX-1841</td><td>Sovereign Chemicals Corp.</td><td>🇺🇸 USA</td><td>Organic Castor Oil</td><td>200 MT</td><td>$1,450</td><td>FOB</td><td>Mundra</td><td><span class="bg bl">Docs Prep</span></td><td style="color:var(--gnl);font-weight:600">$2,90,000</td><td><button class="btn bo bsm" onclick="openM('m-exp')">Shipment</button></td></tr>
+        <tr><td class="tb">#EX-1840</td><td>Pharmako BV</td><td>🇳🇱 Netherlands</td><td>Hydrogenated CO</td><td>80 MT</td><td>$1,820</td><td>CIF</td><td>JNPT</td><td><span class="bg gn">On Board ✓</span></td><td style="color:var(--gnl);font-weight:600">$1,45,600</td><td><button class="btn bo bsm" onclick="openM('m-exp')">Track</button></td></tr>
+        <tr><td class="tb">#EX-1839</td><td>Ito Oil Chemicals, Japan</td><td>🇯🇵 Japan</td><td>Castor Oil FSG</td><td>120 MT</td><td>$1,380</td><td>FOB</td><td>Mundra</td><td><span class="bg yw">QC Hold</span></td><td style="color:var(--gnl);font-weight:600">$1,65,600</td><td><button class="btn bo bsm" onclick="openM('m-exp')">Shipment</button></td></tr>
+        <tr><td class="tb">#EX-1838</td><td>Vertellus LLC</td><td>🇺🇸 USA</td><td>Ricinoleic Acid</td><td>50 MT</td><td>$2,100</td><td>FOB</td><td>Mundra</td><td><span class="bg gn">Shipped ✓</span></td><td style="color:var(--gnl);font-weight:600">$1,05,000</td><td><button class="btn bo bsm" onclick="openM('m-exp')">Track</button></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PURCHASE ORDERS ══ -->
+<div id="page-purchase" class="pg">
+  <div class="pgh"><div><div class="pgt">🏪 Purchase Orders</div><div class="pgs">Seeds, chemicals, solvents, packaging procurement</div></div><div class="pgha"><button class="btn bp" onclick="openM('m-pur')">+ New Purchase Order</button></div></div>
+  <div class="sg">
+    <div class="sc"><div class="slb">Open POs</div><div class="sv gn">12</div><div class="sch">Awaiting delivery</div></div>
+    <div class="sc"><div class="slb">PO Value (June)</div><div class="sv bl">₹3.84 Cr</div><div class="sch">Seeds + Chemicals</div></div>
+    <div class="sc"><div class="slb">Received (June)</div><div class="sv cy">22</div><div class="sch up">On time: 91%</div></div>
+    <div class="sc"><div class="slb">Chemical Payable</div><div class="sv yw">₹48.2L</div><div class="sch">Due this week</div></div>
+  </div>
+  <div class="cd">
+    <div class="cdh"><div class="cdt">Purchase Orders — June 2025</div><button class="btn bo bsm" onclick="openM('m-pur')">+ New PO</button></div>
+    <table><thead><tr><th>PO #</th><th>Supplier</th><th>Material</th><th>Qty</th><th>Rate</th><th>Unit</th><th>Deliver To</th><th>Expected</th><th>Status</th><th>Amount</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td class="tb">PO-7721</td><td>Banaskantha Farmer Co-op</td><td>Castor Seeds (DCH-32)</td><td>500 MT</td><td>₹6,350/MT</td><td>MT</td><td>Unit 1</td><td>04/06</td><td><span class="bg yw">In Transit</span></td><td style="color:var(--gnl);font-weight:600">₹3,17,50,000</td><td><button class="btn bo bsm">Track</button></td></tr>
+      <tr><td class="tb">PO-7720</td><td>Kiran Agencies, Rajkot</td><td>Groundnut Bold-Java</td><td>500 MT</td><td>₹58,000/MT</td><td>MT</td><td>Unit 3</td><td>03/06</td><td><span class="bg rd">URGENT!</span></td><td style="color:var(--gnl);font-weight:600">₹2,90,00,000</td><td><button class="btn brd bsm">Follow Up</button></td></tr>
+      <tr><td class="tb">PO-7719</td><td>HPCL, Mundra</td><td>Hexane (Solvent)</td><td>80 KL</td><td>₹68,000/KL</td><td>KL</td><td>Unit 1</td><td>05/06</td><td><span class="bg bl">Ordered</span></td><td style="color:var(--gnl);font-weight:600">₹54,40,000</td><td><button class="btn bo bsm">Track</button></td></tr>
+      <tr><td class="tb">PO-7718</td><td>Ashapura Minechem, Bhuj</td><td>Bleaching Earth</td><td>100 MT</td><td>₹14,500/MT</td><td>MT</td><td>Units 1,2</td><td>06/06</td><td><span class="bg bl">Ordered</span></td><td style="color:var(--gnl);font-weight:600">₹14,50,000</td><td><button class="btn bo bsm">Track</button></td></tr>
+      <tr><td class="tb">PO-7717</td><td>GACL, Vadodara</td><td>Caustic Soda (NaOH)</td><td>20 MT</td><td>₹32,000/MT</td><td>MT</td><td>Unit 1</td><td>04/06</td><td><span class="bg gn">Received ✓</span></td><td style="color:var(--gnl);font-weight:600">₹6,40,000</td><td><button class="btn bo bsm">GRN</button></td></tr>
+      <tr><td class="tb">PO-7716</td><td>Marudhar Drums, Jodhpur</td><td>MS Drums 200L</td><td>2,000 pcs</td><td>₹1,450/pc</td><td>pcs</td><td>Units 1,2</td><td>03/06</td><td><span class="bg gn">Received ✓</span></td><td style="color:var(--gnl);font-weight:600">₹29,00,000</td><td><button class="btn bo bsm">GRN</button></td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ══ EXPORT MANAGEMENT ══ -->
+<div id="page-export" class="pg">
+  <div class="pgh"><div><div class="pgt">🌍 Export Management</div><div class="pgs">Shipments, documents, LC, BL, certificates — USA, EU, Japan exports</div></div><div class="pgha"><button class="btn bb" onclick="openM('m-exp')">+ New Shipment</button></div></div>
+  <div class="sg">
+    <div class="sc"><div class="slb">Active Shipments</div><div class="sv gn">3</div><div class="sch">In progress</div></div>
+    <div class="sc"><div class="slb">Export Value (June)</div><div class="sv bl">$6,84,000</div><div class="sch up">↑ 22% vs May</div></div>
+    <div class="sc"><div class="slb">Docs Pending</div><div class="sv yw">2</div><div class="sch">BL/COA needed</div></div>
+    <div class="sc"><div class="slb">YTD Export</div><div class="sv cy">$42.8L</div><div class="sch">FY 2025-26</div></div>
+  </div>
+  <div class="cd">
+    <div class="cdh"><div class="cdt">Active Export Shipments</div><button class="btn bo bsm" onclick="openM('m-exp')">+ New Shipment</button></div>
+    <table><thead><tr><th>SH #</th><th>Order Ref</th><th>Buyer</th><th>Country</th><th>Product</th><th>Qty</th><th>Vessel / BL</th><th>ETD</th><th>ETA</th><th>Incoterm</th><th>LC/TT</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td class="tb">SH-2243</td><td>#EX-1841</td><td>Sovereign Chemicals</td><td>🇺🇸 USA</td><td>Organic Castor Oil</td><td>200 MT</td><td>Mundra Port</td><td>10 Jun</td><td>12 Jul</td><td>FOB</td><td><span class="bg gn">LC Confirmed</span></td><td><span class="bg bl">Docs Prep</span></td><td><button class="btn bo bsm">Docs</button></td></tr>
+      <tr><td class="tb">SH-2242</td><td>#EX-1840</td><td>Pharmako BV</td><td>🇳🇱 Netherlands</td><td>Hydrogenated CO</td><td>80 MT</td><td>MSC Diana V.44</td><td>05 Jun</td><td>28 Jun</td><td>CIF</td><td><span class="bg gn">TT Received</span></td><td><span class="bg gn">On Board ✓</span></td><td><button class="btn bo bsm">Track</button></td></tr>
+      <tr><td class="tb">SH-2241</td><td>#EX-1839</td><td>Ito Oil Chemicals</td><td>🇯🇵 Japan</td><td>Castor Oil FSG</td><td>120 MT</td><td>—</td><td>15 Jun</td><td>—</td><td>FOB</td><td><span class="bg yw">LC Draft</span></td><td><span class="bg yw">QC Hold</span></td><td><button class="btn bo bsm">QC First</button></td></tr>
+    </tbody></table>
+  </div>
+  <div class="cd">
+    <div class="cdh"><div class="cdt">Export Documents Checklist — SH-2243 (Sovereign, USA)</div></div>
+    <table><thead><tr><th>#</th><th>Document</th><th>Required By</th><th>Status</th><th>Issued By</th><th>Expiry</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td class="tb">Commercial Invoice</td><td>Buyer + Bank</td><td><span class="bg gn">Ready ✓</span></td><td>Kisan Agro</td><td>—</td><td><button class="btn bo bsm">View</button></td></tr>
+      <tr><td>2</td><td class="tb">Packing List</td><td>Buyer + Customs</td><td><span class="bg gn">Ready ✓</span></td><td>Kisan Agro</td><td>—</td><td><button class="btn bo bsm">View</button></td></tr>
+      <tr><td>3</td><td class="tb">Certificate of Analysis (COA)</td><td>Buyer</td><td><span class="bg yw">QC Pending</span></td><td>Kisan Agro Lab</td><td>—</td><td><button class="btn bo bsm">Upload</button></td></tr>
+      <tr><td>4</td><td class="tb">USDA Organic Certificate</td><td>USA Customs</td><td><span class="bg gn">Valid ✓</span></td><td>Control Union</td><td>31 Mar 2026</td><td><button class="btn bo bsm">View</button></td></tr>
+      <tr><td>5</td><td class="tb">Phytosanitary Certificate</td><td>USA FDA</td><td><span class="bg bl">Applied</span></td><td>Plant Quarantine Dept.</td><td>—</td><td><button class="btn bo bsm">Track</button></td></tr>
+      <tr><td>6</td><td class="tb">Bill of Lading (BL)</td><td>Bank (LC)</td><td><span class="bg rd">Pending</span></td><td>Shipping Line</td><td>—</td><td><button class="btn bo bsm">Request</button></td></tr>
+      <tr><td>7</td><td class="tb">Shipping Bill (Customs)</td><td>Indian Customs</td><td><span class="bg bl">Filed</span></td><td>CHA / ICEGATE</td><td>—</td><td><button class="btn bo bsm">View</button></td></tr>
+      <tr><td>8</td><td class="tb">GST E-Way Bill</td><td>—</td><td><span class="bg gn">Generated ✓</span></td><td>Kisan Agro</td><td>12 Jun</td><td><button class="btn bo bsm">View</button></td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ══ DISPATCH ══ -->
+<div id="page-dispatch" class="pg">
+  <div class="pgh"><div><div class="pgt">🚚 Dispatch & Logistics</div><div class="pgs">Domestic tanker/drum dispatch + export container loading</div></div><div class="pgha"><button class="btn bp" onclick="openM('m-disp')">+ Create Dispatch</button></div></div>
+  <div class="sg">
+    <div class="sc"><div class="slb">Today's Dispatches</div><div class="sv gn">5</div><div class="sch">Tankers + trucks</div></div>
+    <div class="sc"><div class="slb">Delivered (June)</div><div class="sv bl">16</div><div class="sch up">On time: 88%</div></div>
+    <div class="sc"><div class="slb">Pending Dispatch</div><div class="sv yw">6</div><div class="sch">Ready stock</div></div>
+    <div class="sc"><div class="slb">MT Dispatched</div><div class="sv cy">1,840 MT</div><div class="sch">This month</div></div>
+  </div>
+  <div class="cd">
+    <div class="cdh"><div class="cdt">Dispatch Register — June 2025</div><button class="btn bo bsm" onclick="openM('m-disp')">+ New DO</button></div>
+    <table><thead><tr><th>DO #</th><th>Order Ref</th><th>Customer</th><th>Product</th><th>Qty</th><th>Pack Type</th><th>Vehicle</th><th>Driver</th><th>Dispatch Time</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td class="tb">DO-4421</td><td>#SO-4418</td><td>Iffco Tokio, Delhi</td><td>DOC Cake</td><td>400 MT</td><td>50kg Bags / Truck</td><td>GJ-12-T-8812</td><td>Mohan Lal</td><td>01/06 7:00 AM</td><td><span class="bg gn">Delivered ✓</span></td><td><button class="btn bo bsm">POD</button></td></tr>
+      <tr><td class="tb">DO-4420</td><td>#SO-4421</td><td>Asian Paints, Mumbai</td><td>Castor Oil FSG</td><td>150 MT</td><td>200L Drums (750 drums)</td><td>GJ-01-T-4421</td><td>Suresh Nayak</td><td>02/06 9:00 AM</td><td><span class="bg bl">In Transit</span></td><td><button class="btn bo bsm">Track</button></td></tr>
+      <tr><td class="tb">DO-4419</td><td>#EX-1840</td><td>Pharmako BV (NL)</td><td>HCO Pharma</td><td>80 MT</td><td>40kg Bags / Container</td><td>MAEU-4411882</td><td>Container</td><td>05/06 Port</td><td><span class="bg gn">On Vessel ✓</span></td><td><button class="btn bo bsm">Track</button></td></tr>
+      <tr><td class="tb">DO-4418</td><td>#SO-4420</td><td>Pidilite Industries</td><td>DCOFA</td><td>60 MT</td><td>200L Drums (300 drums)</td><td>—</td><td>—</td><td>Pending</td><td><span class="bg yw">Ready</span></td><td><button class="btn bp bsm" onclick="openM('m-disp')">Dispatch</button></td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ══ ACCOUNTS & GST ══ -->
+<div id="page-accounts" class="pg">
+  <div class="pgh"><div><div class="pgt">💰 Accounts & GST</div><div class="pgs">Receivables, payables, GST filing — all 3 entities</div></div><div class="pgha"><button class="btn bp" onclick="openM('m-inv')">+ Create Invoice</button></div></div>
+  <div class="sg">
+    <div class="sc"><div class="slb">Total Receivable</div><div class="sv gn">₹3.42 Cr</div><div class="sch">Domestic clients</div></div>
+    <div class="sc"><div class="slb">Export Receivable</div><div class="sv bl">$4,84,000</div><div class="sch">3 open LCs</div></div>
+    <div class="sc"><div class="slb">May Revenue</div><div class="sv cy">₹8.84 Cr</div><div class="sch up">↑ 16% vs April</div></div>
+    <div class="sc"><div class="slb">GST Payable (May)</div><div class="sv yw">₹42.6L</div><div class="sch">GSTR-1 due 11 Jun</div></div>
+  </div>
+  <div class="itbs">
+    <div class="itb on" onclick="switchItab(this,'it-inv2')">Invoices</div>
+    <div class="itb" onclick="switchItab(this,'it-gst2')">GST Summary</div>
+    <div class="itb" onclick="switchItab(this,'it-led2')">Ledger</div>
+  </div>
+  <div id="it-inv2" class="itp on">
+    <div class="cd" style="margin-top:0">
+      <div class="cdh"><div class="cdt">Invoice List</div><button class="btn bo bsm" onclick="openM('m-inv')">+ New Invoice</button></div>
+      <table><thead><tr><th>Invoice #</th><th>Customer</th><th>GSTIN / Country</th><th>Product</th><th>Taxable</th><th>GST/IGST</th><th>Total</th><th>Due</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td class="tb">INV-12281</td><td>Asian Paints Ltd.</td><td>27AAACA8497P1ZV</td><td>Castor Oil FSG 150MT</td><td>₹1,65,00,000</td><td>₹19,80,000 IGST</td><td style="font-weight:700">₹1,84,80,000</td><td>12/06</td><td><span class="bg bl">Sent</span></td><td><button class="btn bo bsm" onclick="openM('m-inv')">View</button></td></tr>
+        <tr><td class="tb">INV-12280</td><td>Pidilite Industries</td><td>27AAACI0291E1ZV</td><td>DCOFA 60MT</td><td>₹1,11,00,000</td><td>₹13,32,000 IGST</td><td style="font-weight:700">₹1,24,32,000</td><td>10/06</td><td><span class="bg yw">Pending</span></td><td><button class="btn bo bsm" onclick="openM('m-inv')">View</button></td></tr>
+        <tr><td class="tb">INV-12279</td><td>Kansai Nerolac</td><td>27AAACK3950K1ZD</td><td>Blown Castor Oil 40MT</td><td>₹58,00,000</td><td>₹6,96,000 IGST</td><td style="font-weight:700">₹64,96,000</td><td>08/06</td><td><span class="bg yw">Pending</span></td><td><button class="btn bo bsm" onclick="openM('m-inv')">View</button></td></tr>
+        <tr><td class="tb">INV-12278</td><td>Iffco Tokio</td><td>09AAACI5264G1ZF</td><td>DOC Cake 400MT</td><td>₹48,00,000</td><td>₹5,76,000 IGST</td><td style="font-weight:700">₹53,76,000</td><td>03/06</td><td><span class="bg gn">Paid ✓</span></td><td><button class="btn bo bsm" onclick="openM('m-inv')">View</button></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+  <div id="it-gst2" class="itp">
+    <div class="cd">
+      <div class="cdh"><div class="cdt">GST Summary — May 2025 (Kisan Agro Product Industries)</div><button class="btn bp bsm">File GSTR-1</button></div>
+      <table><thead><tr><th>GST Type</th><th>Taxable Amount</th><th>CGST 9%</th><th>SGST 9%</th><th>IGST 18%</th><th>Total GST</th><th>Filed</th></tr></thead>
+      <tbody>
+        <tr><td class="tb">Output — Domestic (Intra-GJ)</td><td>₹82,00,000</td><td>₹7,38,000</td><td>₹7,38,000</td><td>—</td><td style="color:var(--gnl);font-weight:600">₹14,76,000</td><td><span class="bg yw">Pending</span></td></tr>
+        <tr><td class="tb">Output — Interstate</td><td>₹4,80,00,000</td><td>—</td><td>—</td><td>₹86,40,000</td><td style="color:var(--gnl);font-weight:600">₹86,40,000</td><td><span class="bg yw">Pending</span></td></tr>
+        <tr><td class="tb">Output — Export (Zero Rated)</td><td>₹3,12,00,000</td><td>—</td><td>—</td><td>0% (LUT)</td><td style="color:var(--bll);font-weight:600">₹0 (Exempt)</td><td><span class="bg gn">LUT Filed</span></td></tr>
+        <tr><td class="tb">Input Credit (ITC)</td><td>₹2,40,00,000</td><td>₹10,80,000</td><td>₹10,80,000</td><td>₹28,80,000</td><td style="color:var(--gnl);font-weight:600">₹50,40,000</td><td><span class="bg gn">Claimed</span></td></tr>
+        <tr style="background:rgba(46,139,46,.06)"><td class="tb" style="color:var(--gnl)">Net GST Payable</td><td>—</td><td>—</td><td>—</td><td>—</td><td style="color:var(--gnl);font-weight:700;font-size:13px">₹50,76,000</td><td><span class="bg rd">Due 11 Jun</span></td></tr>
+      </tbody></table>
+      <div style="margin-top:12px;padding:10px;background:rgba(21,101,192,.06);border:1px solid rgba(21,101,192,.2);border-radius:8px;font-size:11px;line-height:1.8;color:var(--tx2)">
+        <strong style="color:var(--bll)">Export GST:</strong> GSTIN: 24AABFK2184M1ZQ · HSN: 1515 (Castor Oil), 2304 (DOC Cake), 3823 (Derivatives) · LUT Number: AD240324008XXX · Zero-rated export under LUT — No GST on exports
+      </div>
+    </div>
+  </div>
+  <div id="it-led2" class="itp">
+    <div class="cd">
+      <div class="cdh"><div class="cdt">Customer Ledger — June 2025</div></div>
+      <table><thead><tr><th>Customer</th><th>Opening</th><th>Invoiced</th><th>Received</th><th>Closing Balance</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td class="tb">Asian Paints Ltd.</td><td>₹0</td><td>₹1,84,80,000</td><td>₹0</td><td style="color:var(--yw);font-weight:600">₹1,84,80,000 Dr</td><td><span class="bg yw">Pending</span></td></tr>
+        <tr><td class="tb">Pidilite Industries</td><td>₹0</td><td>₹1,24,32,000</td><td>₹62,16,000</td><td style="color:var(--yw);font-weight:600">₹62,16,000 Dr</td><td><span class="bg bl">Partial</span></td></tr>
+        <tr><td class="tb">Iffco Tokio</td><td>₹0</td><td>₹53,76,000</td><td>₹53,76,000</td><td style="color:var(--gnl);font-weight:600">₹0 Nil</td><td><span class="bg gn">Clear ✓</span></td></tr>
+        <tr><td class="tb">Shalimar Paints</td><td>₹24,00,000</td><td>₹0</td><td>₹0</td><td style="color:var(--rd);font-weight:600">₹24,00,000 Dr</td><td><span class="bg rd">Overdue</span></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+</div>
+<!-- ══ INVOICE ══ -->
+<div id="page-invoice" class="pg">
+  <div class="pgh"><div><div class="pgt">🧾 Invoice / Export Documents</div><div class="pgs">GST Invoice + Commercial Invoice for Export</div></div><div class="pgha"><button class="btn bo" onclick="window.print()">🖨️ Print</button><button class="btn bp" onclick="openM('m-inv')">+ New Invoice</button></div></div>
+  <div class="ivbox">
+    <div class="ivhdr">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span style="font-size:32px">🌿</span>
+          <div><div class="ivkisan">KISAN</div><div class="ivagro">AGRO</div></div>
+        </div>
+        <div class="ivco">KISAN AGRO PRODUCT INDUSTRIES</div>
+        <div class="ivcodet">N.H. No. 14, Near Palanpur, Dist. Banaskantha — 385001, Gujarat, India<br>GSTIN: 24AABFK2184M1ZQ · IEC: 0802000XXXX · Ph: +91-2742-XXXXXX<br>Email: export@kisanagro.com · Web: www.kisanagro.com</div>
+      </div>
+      <div>
+        <div class="ivtit">TAX INVOICE</div>
+        <div class="ivno">Invoice No: <strong>INV-12281</strong><br>Date: 02 June 2025<br>Due Date: 12 June 2025<br>PO Ref: #SO-4421</div>
+      </div>
+    </div>
+    <div class="ivprts">
+      <div><div class="ivplbl">Bill To</div><div class="ivpnm">Asian Paints Ltd.</div><div class="ivpdt">Kasam Industrial Estate, Bhandup (W)<br>Mumbai — 400078, Maharashtra<br>GSTIN: 27AAACA8497P1ZV · State: 27 (Maharashtra)</div></div>
+      <div><div class="ivplbl">Ship To</div><div class="ivpnm">Asian Paints — Paint Factory</div><div class="ivpdt">Patancheru, Hyderabad — 502319<br>Dispatch: Unit 1, Palanpur, Gujarat<br>Vehicle: GJ-01-T-4421 · E-Way: 241298112233</div></div>
+    </div>
+    <table class="ivtbl">
+      <thead><tr><th>#</th><th>Description</th><th>HSN</th><th>Qty (MT)</th><th>Rate/MT (₹)</th><th>Taxable Amt</th><th>IGST 12%</th><th>Total (₹)</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Castor Oil — First Special Grade (FSG), IS:1299, Batch BT-6640</td><td>1515</td><td>150.00</td><td>1,10,000</td><td>1,65,00,000</td><td>19,80,000</td><td><strong>1,84,80,000</strong></td></tr>
+      </tbody>
+    </table>
+    <div style="overflow:hidden">
+      <div class="ivtot">
+        <div class="ivtr"><span>Taxable Amount</span><span>₹1,65,00,000</span></div>
+        <div class="ivtr"><span>IGST @ 12%</span><span>₹19,80,000</span></div>
+        <div class="ivtr"><span>Round Off</span><span>₹0.00</span></div>
+        <div class="ivtr fin"><span>TOTAL PAYABLE</span><span>₹1,84,80,000</span></div>
+      </div>
+    </div>
+    <div style="clear:both"></div>
+    <div class="ivnt">
+      <strong>Amount in Words:</strong> Rupees One Crore Eighty Four Lakh Eighty Thousand Only<br>
+      <strong>Bank Details:</strong> HDFC Bank, Palanpur Branch · A/C: 5012XXXXXXXXXX · IFSC: HDFC0002XXX<br>
+      <strong>Terms:</strong> Payment within 10 days · HSN 1515 — IGST 12% · Subject to Banaskantha Jurisdiction<br>
+      <strong>Quality:</strong> IS 1299 Certified · COA attached · ISO 9001:2015 Compliant
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:18px;padding-top:12px;border-top:1px solid #eee;font-size:11px;color:#555">
+      <div>Receiver's Signature &amp; Stamp</div>
+      <div style="text-align:right"><strong style="color:#2e8b2e">For Kisan Agro Product Industries</strong><br><br><br><span style="color:#888">Authorised Signatory</span></div>
+    </div>
+    <div style="text-align:center;margin-top:14px;padding-top:10px;border-top:1px solid #eee;font-size:10px;color:#aaa">Computer generated invoice · Kisan Agro Product Industries · www.kisanagro.com · Est. 1986</div>
+  </div>
+</div>
+
+<!-- ══ PAYROLL ══ -->
+<div id="page-payroll" class="pg">
+  <div class="pgh"><div><div class="pgt">👷 Staff & Payroll</div><div class="pgs">All 3 units — attendance, salary, PF, ESI compliance</div></div><div class="pgha"><button class="btn bo" onclick="openM('m-emp')">+ Add Employee</button><button class="btn bp">Process Payroll</button></div></div>
+  <div class="sg">
+    <div class="sc"><div class="slb">Total Staff</div><div class="sv gn">322</div><div class="sch">All 3 units</div></div>
+    <div class="sc"><div class="slb">Present Today</div><div class="sv bl">296</div><div class="sch up">92% attendance</div></div>
+    <div class="sc"><div class="slb">Absent Today</div><div class="sv rd">26</div><div class="sch">8% absent</div></div>
+    <div class="sc"><div class="slb">May Payroll</div><div class="sv cy">₹62.4L</div><div class="sch">Processed</div></div>
+  </div>
+  <div class="cd">
+    <div class="cdh"><div class="cdt">Department Headcount — All Units</div></div>
+    <table><thead><tr><th>Department</th><th>Unit 1 — Kisan Agro</th><th>Unit 2 — Oleochem</th><th>Unit 3 — Proteins</th><th>Total</th><th>Avg Salary</th><th>May Total</th></tr></thead>
+    <tbody>
+      <tr><td class="tb">Seed/Oil Processing</td><td>55</td><td>30</td><td>40</td><td><strong>125</strong></td><td>₹18,000</td><td>₹22,50,000</td></tr>
+      <tr><td class="tb">Plant / Maintenance</td><td>18</td><td>12</td><td>10</td><td><strong>40</strong></td><td>₹22,000</td><td>₹8,80,000</td></tr>
+      <tr><td class="tb">Quality Control / Lab</td><td>12</td><td>8</td><td>6</td><td><strong>26</strong></td><td>₹26,000</td><td>₹6,76,000</td></tr>
+      <tr><td class="tb">Store & Dispatch</td><td>14</td><td>8</td><td>10</td><td><strong>32</strong></td><td>₹15,500</td><td>₹4,96,000</td></tr>
+      <tr><td class="tb">Supervisors</td><td>10</td><td>7</td><td>7</td><td><strong>24</strong></td><td>₹36,000</td><td>₹8,64,000</td></tr>
+      <tr><td class="tb">Office / Export / Admin</td><td>20</td><td>10</td><td>8</td><td><strong>38</strong></td><td>₹32,000</td><td>₹12,16,000</td></tr>
+    </tbody></table>
+  </div>
+  <div class="cd">
+    <div class="cdh"><div class="cdt">Salary Slips — May 2025 Sample</div><button class="btn bo bsm" onclick="openM('m-emp')">+ Add Employee</button></div>
+    <table><thead><tr><th>Emp ID</th><th>Name</th><th>Role</th><th>Unit</th><th>Basic</th><th>HRA</th><th>PF Ded.</th><th>ESI Ded.</th><th>Net</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td class="tb">KAP-001</td><td>Kishore Desai</td><td>Plant Supervisor</td><td>Unit 1</td><td>₹32,000</td><td>₹6,400</td><td>₹3,840</td><td>₹560</td><td style="color:var(--gnl);font-weight:600">₹34,000</td><td><span class="bg gn">Paid</span></td></tr>
+      <tr><td class="tb">KAP-002</td><td>Anand Bhavsar</td><td>Plant Supervisor</td><td>Unit 2</td><td>₹30,000</td><td>₹6,000</td><td>₹3,600</td><td>₹525</td><td style="color:var(--gnl);font-weight:600">₹31,875</td><td><span class="bg gn">Paid</span></td></tr>
+      <tr><td class="tb">KAP-003</td><td>Dr. Nilesh Shah</td><td>QC Manager</td><td>Unit 1</td><td>₹42,000</td><td>₹8,400</td><td>₹5,040</td><td>—</td><td style="color:var(--gnl);font-weight:600">₹45,360</td><td><span class="bg gn">Paid</span></td></tr>
+      <tr><td class="tb">KAP-004</td><td>Rahul Patel</td><td>Export Manager</td><td>Unit 1</td><td>₹45,000</td><td>₹9,000</td><td>₹5,400</td><td>—</td><td style="color:var(--gnl);font-weight:600">₹48,600</td><td><span class="bg gn">Paid</span></td></tr>
+      <tr><td class="tb">KAP-082</td><td>Mahesh Parmar</td><td>Processing Operator</td><td>Unit 1</td><td>₹16,500</td><td>₹3,300</td><td>₹1,980</td><td>₹289</td><td style="color:var(--gnl);font-weight:600">₹17,531</td><td><span class="bg gn">Paid</span></td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ══ REPORTS ══ -->
+<div id="page-reports" class="pg">
+  <div class="pgh"><div><div class="pgt">📈 Reports & Analytics</div><div class="pgs">Production, sales, export, financial intelligence</div></div><div class="pgha"><button class="btn bo">Export PDF</button><button class="btn bp">Export Excel</button></div></div>
+  <div class="cg">
+    <div class="cd">
+      <div class="cdh"><div class="cdt">Unit-wise Processing — May 2025</div></div>
+      <table><thead><tr><th>Unit</th><th>Seed Input</th><th>Oil Output</th><th>Yield %</th><th>Efficiency</th><th>vs April</th></tr></thead>
+      <tbody>
+        <tr><td class="tb">Unit 1 — Kisan Agro</td><td>10,200 MT</td><td style="color:var(--gnl);font-weight:600">4,080 MT</td><td>40%</td><td><span class="bg gn">92%</span></td><td style="color:var(--gnl)">↑ 8%</td></tr>
+        <tr><td class="tb">Unit 2 — Oleochem</td><td>5,800 MT oil</td><td style="color:var(--bll);font-weight:600">4,930 MT deriv.</td><td>85%</td><td><span class="bg gn">88%</span></td><td style="color:var(--gnl)">↑ 5%</td></tr>
+        <tr><td class="tb">Unit 3 — Proteins</td><td>4,200 MT</td><td style="color:var(--yw);font-weight:600">1,680 MT</td><td>40%</td><td><span class="bg yw">78%</span></td><td style="color:var(--rd)">↓ 4%</td></tr>
+        <tr style="background:rgba(46,139,46,.06)"><td style="color:var(--gnl);font-weight:700">TOTAL GROUP</td><td style="font-weight:700">20,200 MT</td><td style="color:var(--gnl);font-weight:700">10,690 MT</td><td>53%</td><td><span class="bg bl">88%</span></td><td style="color:var(--gnl)">↑ 5%</td></tr>
+      </tbody></table>
+    </div>
+    <div class="cd">
+      <div class="cdh"><div class="cdt">Product Revenue — May 2025</div></div>
+      <table><thead><tr><th>Product</th><th>Volume</th><th>Revenue</th><th>Growth</th></tr></thead>
+      <tbody>
+        <tr><td class="tb">Castor Oil (All Grades)</td><td>2,840 MT</td><td style="color:var(--gnl);font-weight:600">₹3.12 Cr</td><td style="color:var(--gnl)">↑ 18%</td></tr>
+        <tr><td class="tb">Derivatives (DCOFA, HCO, RA)</td><td>980 MT</td><td style="color:var(--gnl);font-weight:600">₹2.18 Cr</td><td style="color:var(--gnl)">↑ 28%</td></tr>
+        <tr><td class="tb">De-Oiled Castor Cake</td><td>4,800 MT</td><td style="color:var(--gnl);font-weight:600">₹57.6L</td><td style="color:var(--gnl)">↑ 6%</td></tr>
+        <tr><td class="tb">GN Oil + GN Seeds</td><td>1,680 MT</td><td style="color:var(--gnl);font-weight:600">₹1.48 Cr</td><td style="color:var(--rd)">↓ 3%</td></tr>
+        <tr><td class="tb">Biomass Pellets</td><td>320 MT</td><td style="color:var(--gnl);font-weight:600">₹9.6L</td><td style="color:var(--gnl)">↑ 12%</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+  <div class="cg">
+    <div class="cd" style="margin-bottom:0">
+      <div class="cdh"><div class="cdt">Export Destinations — May 2025</div></div>
+      <table><thead><tr><th>Country</th><th>Product</th><th>Volume</th><th>Value (USD)</th><th>Share %</th></tr></thead>
+      <tbody>
+        <tr><td class="tb">🇺🇸 USA</td><td>Organic CO, DCOFA</td><td>880 MT</td><td style="color:var(--gnl);font-weight:600">$12,84,000</td><td><div class="pb" style="width:80px"><div class="pf gn" style="width:45%"></div></div></td></tr>
+        <tr><td class="tb">🇳🇱 Netherlands / EU</td><td>HCO Pharma, Ricinoleic</td><td>420 MT</td><td style="color:var(--gnl);font-weight:600">$7,65,600</td><td><div class="pb" style="width:80px"><div class="pf bl" style="width:28%"></div></div></td></tr>
+        <tr><td class="tb">🇯🇵 Japan</td><td>Castor Oil FSG</td><td>280 MT</td><td style="color:var(--gnl);font-weight:600">$3,86,400</td><td><div class="pb" style="width:80px"><div class="pf yw" style="width:14%"></div></div></td></tr>
+        <tr><td class="tb">🇨🇳 China</td><td>DCOFA, Blown CO</td><td>180 MT</td><td style="color:var(--gnl);font-weight:600">$2,88,000</td><td><div class="pb" style="width:80px"><div class="pf" style="width:10%;background:var(--or)"></div></div></td></tr>
+        <tr><td class="tb">🌏 Others</td><td>Mixed</td><td>80 MT</td><td style="color:var(--gnl);font-weight:600">$96,000</td><td><div class="pb" style="width:80px"><div class="pf rd" style="width:3%"></div></div></td></tr>
+      </tbody></table>
+    </div>
+    <div class="cd" style="margin-bottom:0">
+      <div class="cdh"><div class="cdt">Monthly Revenue Trend</div></div>
+      <div style="display:flex;align-items:flex-end;gap:7px;height:90px;padding:6px 0">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px"><div style="flex:1;width:100%;display:flex;align-items:flex-end"><div style="width:100%;height:55%;background:rgba(76,175,80,.3);border-radius:4px 4px 0 0"></div></div><div style="font-size:9px;color:var(--tx3)">Jan</div></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px"><div style="flex:1;width:100%;display:flex;align-items:flex-end"><div style="width:100%;height:60%;background:rgba(76,175,80,.35);border-radius:4px 4px 0 0"></div></div><div style="font-size:9px;color:var(--tx3)">Feb</div></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px"><div style="flex:1;width:100%;display:flex;align-items:flex-end"><div style="width:100%;height:68%;background:rgba(76,175,80,.45);border-radius:4px 4px 0 0"></div></div><div style="font-size:9px;color:var(--tx3)">Mar</div></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px"><div style="flex:1;width:100%;display:flex;align-items:flex-end"><div style="width:100%;height:75%;background:rgba(76,175,80,.55);border-radius:4px 4px 0 0"></div></div><div style="font-size:9px;color:var(--tx3)">Apr</div></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px"><div style="flex:1;width:100%;display:flex;align-items:flex-end"><div style="width:100%;height:92%;background:linear-gradient(180deg,var(--gn),var(--gnl));border-radius:4px 4px 0 0"></div></div><div style="font-size:9px;color:var(--gnl);font-weight:600">May</div></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px"><div style="flex:1;width:100%;display:flex;align-items:flex-end"><div style="width:100%;height:35%;background:rgba(33,150,243,.3);border-radius:4px 4px 0 0;border:1px dashed var(--bll)"></div></div><div style="font-size:9px;color:var(--bll)">Jun*</div></div>
+      </div>
+      <div style="font-size:10px;color:var(--tx3);text-align:center">*Jun partial · May peak: ₹8.84 Cr</div>
+      <div style="margin-top:10px;font-size:12px;display:flex;flex-direction:column;gap:5px">
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--tx2)">May Revenue</span><span style="color:var(--gnl);font-weight:600">₹8.84 Cr</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--tx2)">June (so far)</span><span style="color:var(--bll);font-weight:600">₹3.42 Cr</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--tx2)">Export (May)</span><span style="color:var(--gnl);font-weight:600">$28.20L</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ALERTS ══ -->
+<div id="page-alerts" class="pg">
+  <div class="pgh"><div><div class="pgt">🔔 System Alerts</div><div class="pgs">Live notifications from all 3 units</div></div></div>
+  <div class="cd">
+    <table><thead><tr><th>Priority</th><th>Alert Description</th><th>Unit</th><th>Category</th><th>Time</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td><span class="bg rd">🔴 Critical</span></td><td>Groundnut seed stock &lt;2 days — Unit 3 may stop</td><td>Unit 3 — Proteins</td><td>Procurement</td><td>20 min ago</td><td style="color:var(--gnl);cursor:pointer;font-size:11px" onclick="openM('m-proc')">Emergency Buy →</td></tr>
+      <tr><td><span class="bg rd">🔴 Critical</span></td><td>Export shipment SH-2243 — COA not issued, ETD 10 Jun</td><td>Unit 1</td><td>Export</td><td>1 hr ago</td><td style="color:var(--gnl);cursor:pointer;font-size:11px" onclick="openM('m-qc')">QC Lab →</td></tr>
+      <tr><td><span class="bg yw">🟡 Warning</span></td><td>Hexane stock at 30% — reorder from HPCL needed</td><td>Unit 1</td><td>Inventory</td><td>2 hr ago</td><td style="color:var(--gnl);cursor:pointer;font-size:11px" onclick="openM('m-pur')">Raise PO →</td></tr>
+      <tr><td><span class="bg yw">🟡 Warning</span></td><td>QC Batch BT-6641 organic test result pending — Japan shipment hold</td><td>Unit 1 Lab</td><td>Quality</td><td>2 hr ago</td><td style="color:var(--gnl);cursor:pointer;font-size:11px" onclick="showPage('quality',null)">View QC →</td></tr>
+      <tr><td><span class="bg yw">🟡 Warning</span></td><td>Shalimar Paints payment overdue ₹24,00,000</td><td>Accounts</td><td>Finance</td><td>3 hr ago</td><td style="color:var(--gnl);cursor:pointer;font-size:11px">Send Reminder →</td></tr>
+      <tr><td><span class="bg bl">🔵 Info</span></td><td>New export order — Sovereign Chemicals USA $2,90,000 — Organic CO</td><td>Unit 1</td><td>Sales</td><td>2 hr ago</td><td style="color:var(--gnl);cursor:pointer;font-size:11px" onclick="showPage('orders',null)">Process →</td></tr>
+      <tr><td><span class="bg bl">🔵 Info</span></td><td>USDA Organic Certificate renewed — valid till Mar 2026</td><td>All Units</td><td>Compliance</td><td>Yesterday</td><td style="color:var(--tx3);font-size:11px">Done ✓</td></tr>
+      <tr><td><span class="bg gn">🟢 Good</span></td><td>Pharmako BV shipment DO-4419 loaded on vessel ✓</td><td>Unit 2</td><td>Export</td><td>Yesterday</td><td style="color:var(--tx3);font-size:11px">Done ✓</td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ══ SETTINGS ══ -->
+<div id="page-settings" class="pg">
+  <div class="pgh"><div><div class="pgt">⚙️ Settings & Team Management</div><div class="pgs">Company config, users, unit setup, compliance & notifications</div></div><div class="pgha"><button class="btn bp" onclick="openM('m-user')">+ Add User</button></div></div>
+  <div class="stabs">
+    <div class="stab on" onclick="switchStab(this,'sb-co')">🏢 Company</div>
+    <div class="stab" onclick="switchStab(this,'sb-team')">👥 Team</div>
+    <div class="stab" onclick="switchStab(this,'sb-units')">🏭 Units</div>
+    <div class="stab" onclick="switchStab(this,'sb-cert')">📋 Certifications</div>
+    <div class="stab" onclick="switchStab(this,'sb-notif')">🔔 Notifications</div>
+    <div class="stab" onclick="switchStab(this,'sb-bkp')">💾 Backup</div>
+  </div>
+  <div id="sb-co" class="spnl on">
+    <div class="cd">
+      <div class="cdh"><div class="cdt">Company Information</div><button class="btn bp bsm">Save</button></div>
+      <div class="fr"><div class="fg"><label class="fl">Company Name</label><input class="fi" value="Kisan Agro Product Industries"></div><div class="fg"><label class="fl">Group</label><input class="fi" value="Kisan Agro Group (3 Entities)"></div></div>
+      <div class="fr"><div class="fg"><label class="fl">GSTIN (Kisan Agro)</label><input class="fi" value="24AABFK2184M1ZQ"></div><div class="fg"><label class="fl">IEC (Import Export Code)</label><input class="fi" value="0802000XXXX"></div></div>
+      <div class="fr"><div class="fg"><label class="fl">Address</label><input class="fi" value="N.H.14, Near Palanpur, Banaskantha — 385001"></div><div class="fg"><label class="fl">Email</label><input class="fi" value="export@kisanagro.com"></div></div>
+      <div class="fr"><div class="fg"><label class="fl">Phone</label><input class="fi" value="+91-2742-XXXXXX"></div><div class="fg"><label class="fl">Bank (HDFC Palanpur)</label><input class="fi" value="5012XXXXXXXXXX · IFSC: HDFC0002XXX"></div></div>
+    </div>
+  </div>
+  <div id="sb-team" class="spnl">
+    <div class="cd">
+      <div class="cdh"><div class="cdt">👥 Team Members & ERP Access</div><button class="btn bp bsm" onclick="openM('m-user')">+ Add User</button></div>
+      <div class="tcrd"><div class="tav" style="background:linear-gradient(135deg,var(--gn),var(--gnl))">RP</div><div style="flex:1"><div class="tnm">Rahul Patel</div><div class="trl">Export Manager / ERP Admin</div><div class="tun">All Units · Full Access</div></div><div class="tact"><span class="bg gn">Active</span><span class="bg bl">Admin</span></div></div>
+      <div class="tcrd"><div class="tav" style="background:linear-gradient(135deg,#1565c0,#42a5f5)">KD</div><div style="flex:1"><div class="tnm">Kishore Desai</div><div class="trl">Plant Supervisor — Unit 1</div><div class="tun">Unit 1 only · Production + Procurement Entry</div></div><div class="tact"><span class="bg gn">Active</span><span class="bg gn">Supervisor</span><button class="btn bo bsm">Edit</button></div></div>
+      <div class="tcrd"><div class="tav" style="background:linear-gradient(135deg,#7b1fa2,#ab47bc)">AB</div><div style="flex:1"><div class="tnm">Anand Bhavsar</div><div class="trl">Plant Supervisor — Unit 2</div><div class="tun">Unit 2 only · Production Entry</div></div><div class="tact"><span class="bg gn">Active</span><span class="bg gn">Supervisor</span><button class="btn bo bsm">Edit</button></div></div>
+      <div class="tcrd"><div class="tav" style="background:linear-gradient(135deg,#d84315,#ff7043)">ST</div><div style="flex:1"><div class="tnm">Sanjay Trivedi</div><div class="trl">Plant Supervisor — Unit 3</div><div class="tun">Unit 3 only · Production + Procurement Entry</div></div><div class="tact"><span class="bg gn">Active</span><span class="bg gn">Supervisor</span><button class="btn bo bsm">Edit</button></div></div>
+      <div class="tcrd"><div class="tav" style="background:linear-gradient(135deg,#0277bd,#29b6f6)">NS</div><div style="flex:1"><div class="tnm">Dr. Nilesh Shah</div><div class="trl">QC Manager</div><div class="tun">All Units · Quality Control Entry + Certificates</div></div><div class="tact"><span class="bg gn">Active</span><span class="bg cy">QC</span><button class="btn bo bsm">Edit</button></div></div>
+      <div class="tcrd"><div class="tav" style="background:linear-gradient(135deg,#558b2f,#aed581)">VP</div><div style="flex:1"><div class="tnm">Vijay Parmar</div><div class="trl">Accountant</div><div class="tun">All Units · Accounts, GST, Invoices Only</div></div><div class="tact"><span class="bg gn">Active</span><span class="bg yw">Accounts</span><button class="btn bo bsm">Edit</button></div></div>
+    </div>
+  </div>
+  <div id="sb-units" class="spnl">
+    <div class="cd">
+      <div class="cdh"><div class="cdt">🏭 Unit Configuration</div></div>
+      <table><thead><tr><th>Unit</th><th>Legal Entity</th><th>Location</th><th>Products</th><th>Capacity</th><th>Est.</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td class="tb">Unit 1</td><td>Kisan Agro Product Industries</td><td>N.H.14, Palanpur</td><td>Castor Oil, DOC Cake, Biomass</td><td>400 MT seeds/day</td><td>1986</td><td><span class="bg gn">Active</span></td></tr>
+        <tr><td class="tb">Unit 2</td><td>Kisan Oleochem & Derivatives Pvt. Ltd.</td><td>Palanpur Industrial Area</td><td>DCOFA, HCO, Ricinoleic Acid, Blown CO</td><td>250 MT/day</td><td>2011</td><td><span class="bg gn">Active</span></td></tr>
+        <tr><td class="tb">Unit 3</td><td>Kisan Proteins Pvt. Ltd.</td><td>Palanpur</td><td>Refined GN Oil, Groundnut Bold, GN DOC</td><td>400 MT GN seeds/day</td><td>1995</td><td><span class="bg gn">Active</span></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+  <div id="sb-cert" class="spnl">
+    <div class="cd">
+      <div class="cdh"><div class="cdt">📋 Certifications & Compliance</div><button class="btn bp bsm">+ Add Certificate</button></div>
+      <table><thead><tr><th>Certificate</th><th>Issued By</th><th>Applicable To</th><th>Certificate No.</th><th>Valid From</th><th>Valid Till</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td class="tb">USDA Organic (NOP)</td><td>Control Union Certifications</td><td>Organic Castor Oil</td><td>CU-NOP-XXXX</td><td>01 Apr 2025</td><td>31 Mar 2026</td><td><span class="bg gn">Valid ✓</span></td><td><button class="btn bo bsm">View</button></td></tr>
+        <tr><td class="tb">EU Organic (EC 834/2007)</td><td>Control Union</td><td>Organic Castor Oil</td><td>CU-EU-XXXX</td><td>01 Apr 2025</td><td>31 Mar 2026</td><td><span class="bg gn">Valid ✓</span></td><td><button class="btn bo bsm">View</button></td></tr>
+        <tr><td class="tb">ISO 9001:2015</td><td>Bureau Veritas</td><td>All Units</td><td>BV-ISO-XXXX</td><td>15 Jan 2024</td><td>14 Jan 2027</td><td><span class="bg gn">Valid ✓</span></td><td><button class="btn bo bsm">View</button></td></tr>
+        <tr><td class="tb">FSSAI License (GN Oil)</td><td>FSSAI, India</td><td>Unit 3 — GN Oil</td><td>24221XXXXXXX</td><td>01 Jun 2024</td><td>31 May 2027</td><td><span class="bg gn">Valid ✓</span></td><td><button class="btn bo bsm">View</button></td></tr>
+        <tr><td class="tb">REACH Registration (EU)</td><td>European Chemicals Agency</td><td>Ricinoleic Acid</td><td>01-XXXXXXXXXX</td><td>—</td><td>Permanent</td><td><span class="bg gn">Valid ✓</span></td><td><button class="btn bo bsm">View</button></td></tr>
+        <tr><td class="tb">Phytosanitary — NPPO</td><td>Plant Quarantine Dept.</td><td>Export</td><td>Per Shipment</td><td>—</td><td>Per shipment</td><td><span class="bg bl">Per Shipment</span></td><td><button class="btn bo bsm">Apply</button></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+  <div id="sb-notif" class="spnl">
+    <div class="cd">
+      <div class="cdh"><div class="cdt">🔔 Notification Preferences</div><button class="btn bp bsm">Save</button></div>
+      <div class="srow"><div><div class="sw">Seed Stock Low Alert</div><div class="ssub">Alert when seed stock falls below 3-day coverage</div></div><label class="tgl"><input type="checkbox" class="tgi" checked><div class="tgt"></div><span style="font-size:11px;color:var(--tx2)">ON</span></label></div>
+      <div class="srow"><div><div class="sw">Chemical Stock Alert</div><div class="ssub">Alert when hexane/bleaching earth below reorder</div></div><label class="tgl"><input type="checkbox" class="tgi" checked><div class="tgt"></div><span style="font-size:11px;color:var(--tx2)">ON</span></label></div>
+      <div class="srow"><div><div class="sw">QC Batch Fail Alert</div><div class="ssub">Notify Export Manager when batch fails QC</div></div><label class="tgl"><input type="checkbox" class="tgi" checked><div class="tgt"></div><span style="font-size:11px;color:var(--tx2)">ON</span></label></div>
+      <div class="srow"><div><div class="sw">Export Docs Pending Alert</div><div class="ssub">Alert 5 days before ETD if documents incomplete</div></div><label class="tgl"><input type="checkbox" class="tgi" checked><div class="tgt"></div><span style="font-size:11px;color:var(--tx2)">ON</span></label></div>
+      <div class="srow"><div><div class="sw">GST Filing Reminder</div><div class="ssub">Reminder 5 days before GSTR-1 due</div></div><label class="tgl"><input type="checkbox" class="tgi" checked><div class="tgt"></div><span style="font-size:11px;color:var(--tx2)">ON</span></label></div>
+      <div class="srow"><div><div class="sw">Certificate Expiry Alert</div><div class="ssub">Alert 30 days before USDA/ISO cert expiry</div></div><label class="tgl"><input type="checkbox" class="tgi" checked><div class="tgt"></div><span style="font-size:11px;color:var(--tx2)">ON</span></label></div>
+      <div class="srow"><div><div class="sw">Daily Processing Summary</div><div class="ssub">Send daily summary to Admin at 8 PM</div></div><label class="tgl"><input type="checkbox" class="tgi" checked><div class="tgt"></div><span style="font-size:11px;color:var(--tx2)">ON</span></label></div>
+    </div>
+  </div>
+  <div id="sb-bkp" class="spnl">
+    <div class="cd">
+      <div class="cdh"><div class="cdt">💾 Backup & Security</div></div>
+      <div class="srow"><div><div class="sw">Auto Daily Backup</div><div class="ssub">Nightly backup at 2:00 AM</div></div><span class="bg gn">Active · Last: Today 2:00 AM</span></div>
+      <div class="srow"><div><div class="sw">Cloud Sync (Google Drive)</div><div class="ssub">Backup synced after every run</div></div><button class="btn bo bsm">Configure</button></div>
+      <div class="srow"><div><div class="sw">Data Retention</div><div class="ssub">7 years (GST + Export compliance)</div></div><span style="font-size:12px;color:var(--tx2)">7 Years</span></div>
+      <div class="srow"><div><div class="sw">Export Data Archive</div><div class="ssub">All shipping documents archived permanently</div></div><span class="bg gn">Active</span></div>
+      <div class="srow"><div><div class="sw">Two-Factor Auth</div><div class="ssub">OTP login for Admin & Export Manager</div></div><label class="tgl"><input type="checkbox" class="tgi"><div class="tgt"></div><span style="font-size:11px;color:var(--tx2)">OFF</span></label></div>
+    </div>
+  </div>
+</div>
+
+</main></div></div>
+
+<!-- ════ ALL MODALS ════ -->
+<!-- SEED PROCUREMENT -->
+<div class="mo" id="m-proc"><div class="mb">
+  <div class="mt">🌱 New Seed Procurement <span class="mc" onclick="closeM('m-proc')">×</span></div>
+  <div class="fsec">Seller Details</div>
+  <div class="fr"><div class="fg"><label class="fl">Seller / Trader Name</label><input class="fi" placeholder="e.g. Bhavesh Patel / Ratan Trader"></div><div class="fg"><label class="fl">Seller Type</label><select class="fi"><option>Direct Farmer</option><option>Local Trader</option><option>Mandi / APMC</option><option>Farmer Co-operative</option></select></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Village / Town</label><input class="fi" placeholder="e.g. Tharad, Banaskantha"></div><div class="fg"><label class="fl">State</label><select class="fi"><option>Gujarat</option><option>Rajasthan</option><option>Andhra Pradesh</option></select></div></div>
+  <div class="fsec">Seed Details</div>
+  <div class="fr"><div class="fg"><label class="fl">Seed Type</label><select class="fi"><option>Castor Seed — DCH-32</option><option>Castor Seed — GCH-4</option><option>Castor Seed — Hybrid</option><option>Groundnut Bold (Java)</option><option>Groundnut Ordinary</option></select></div><div class="fg"><label class="fl">Quantity (MT)</label><input class="fi" type="number" placeholder="e.g. 200"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Rate (₹/MT)</label><input class="fi" type="number" placeholder="e.g. 6350"></div><div class="fg"><label class="fl">Moisture % (at receipt)</label><input class="fi" type="number" placeholder="e.g. 6.5"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Oil Content %</label><input class="fi" type="number" placeholder="e.g. 48.2"></div><div class="fg"><label class="fl">Deliver To Unit</label><select class="fi"><option>Unit 1 — Kisan Agro (Castor)</option><option>Unit 3 — Kisan Proteins (GN)</option></select></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Expected Date</label><input class="fi" type="date"></div><div class="fg"><label class="fl">Payment Terms</label><select class="fi"><option>Immediate Cash</option><option>2 Days</option><option>7 Days</option><option>15 Days</option></select></div></div>
+  <div class="ma"><button class="btn bo" onclick="closeM('m-proc')">Cancel</button><button class="btn bp" onclick="closeM('m-proc')">💾 Save Lot</button></div>
+</div></div>
+
+<!-- PROCESSING BATCH -->
+<div class="mo" id="m-batch"><div class="mb">
+  <div class="mt">🧪 Create Processing Batch/Job <span class="mc" onclick="closeM('m-batch')">×</span></div>
+  <div class="fr"><div class="fg"><label class="fl">Processing Stage</label><select class="fi"><option>Seed Crushing (Expeller)</option><option>Solvent Extraction</option><option>Oil Refining / Bleaching</option><option>Hydrogenation (HCO)</option><option>Dehydration (DCOFA)</option><option>Sulphation / Ethoxylation</option><option>GN Crushing & Refining</option></select></div><div class="fg"><label class="fl">Processing Unit</label><select class="fi"><option>Unit 1 — Kisan Agro</option><option>Unit 2 — Oleochem</option><option>Unit 3 — Proteins</option></select></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Input Material</label><input class="fi" placeholder="e.g. Castor Seeds LOT-8821 / Crude Oil"></div><div class="fg"><label class="fl">Input Quantity (MT)</label><input class="fi" type="number" placeholder="e.g. 180"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Output Product</label><select class="fi"><option>Crude Castor Oil</option><option>Refined Castor Oil (FSG)</option><option>Organic Castor Oil</option><option>Hydrogenated Castor Oil</option><option>DCOFA (C18:2)</option><option>Ricinoleic Acid</option><option>Blown Castor Oil</option><option>De-Oiled Castor Cake</option><option>Refined Groundnut Oil</option></select></div><div class="fg"><label class="fl">Expected Output (MT)</label><input class="fi" type="number" placeholder="e.g. 72"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Start Date/Time</label><input class="fi" type="datetime-local"></div><div class="fg"><label class="fl">Assigned Operator</label><input class="fi" placeholder="e.g. Kishore Desai"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Linked Order</label><input class="fi" placeholder="e.g. #EX-1841 or #SO-4421"></div><div class="fg"><label class="fl">Grade / Specification</label><select class="fi"><option>FSG (First Special Grade)</option><option>USDA Organic</option><option>Pharma Grade (IP/USP)</option><option>Technical Grade</option><option>Food Grade (FSSAI)</option></select></div></div>
+  <div class="ma"><button class="btn bo" onclick="closeM('m-batch')">Cancel</button><button class="btn bp" onclick="closeM('m-batch')">💾 Create Job</button></div>
+</div></div>
+
+<!-- QC ENTRY -->
+<div class="mo" id="m-qc"><div class="mb">
+  <div class="mt">✅ QC Test Entry <span class="mc" onclick="closeM('m-qc')">×</span></div>
+  <div class="fr"><div class="fg"><label class="fl">Batch ID</label><input class="fi" placeholder="e.g. BT-6641"></div><div class="fg"><label class="fl">Unit</label><select class="fi"><option>Unit 1 — Kisan Agro</option><option>Unit 2 — Oleochem</option><option>Unit 3 — Proteins</option></select></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Product</label><select class="fi"><option>Organic Castor Oil</option><option>Castor Oil FSG</option><option>Hydrogenated Castor Oil</option><option>DCOFA</option><option>Ricinoleic Acid</option><option>Refined GN Oil</option><option>De-Oiled Cake</option></select></div><div class="fg"><label class="fl">Sample Qty (MT)</label><input class="fi" type="number" placeholder="e.g. 2"></div></div>
+  <div class="fsec">Test Parameters</div>
+  <div class="fr"><div class="fg"><label class="fl">FFA % (max 1.0)</label><input class="fi" type="number" placeholder="e.g. 0.8"></div><div class="fg"><label class="fl">Moisture % (max 0.15)</label><input class="fi" type="number" placeholder="e.g. 0.12"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Colour — Gardner / Lovibond</label><input class="fi" placeholder="e.g. 3 Gardner"></div><div class="fg"><label class="fl">Viscosity (cP at 25°C)</label><input class="fi" type="number" placeholder="e.g. 920"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Iodine Value</label><input class="fi" type="number" placeholder="e.g. 84.2"></div><div class="fg"><label class="fl">Specific Gravity</label><input class="fi" type="number" placeholder="e.g. 0.957"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">QC Inspector</label><input class="fi" placeholder="e.g. Dr. Nilesh Shah"></div><div class="fg"><label class="fl">Result</label><select class="fi"><option>PASS</option><option>FAIL</option><option>CONDITIONAL PASS</option></select></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Certificate Type</label><select class="fi"><option>USDA Organic COA</option><option>Standard COA</option><option>Pharma Grade (IP/USP)</option><option>FSSAI Certificate</option><option>Fertilizer Certificate</option></select></div><div class="fg"><label class="fl">Remarks</label><input class="fi" placeholder="e.g. All within IS 1299 spec"></div></div>
+  <div class="ma"><button class="btn bo" onclick="closeM('m-qc')">Cancel</button><button class="btn bp" onclick="closeM('m-qc')">💾 Save QC Report</button></div>
+</div></div>
+
+<!-- STOCK ENTRY -->
+<div class="mo" id="m-stk"><div class="mb">
+  <div class="mt">📦 Stock Entry <span class="mc" onclick="closeM('m-stk')">×</span></div>
+  <div class="fr"><div class="fg"><label class="fl">Entry Type</label><select class="fi"><option>Received (Inward)</option><option>Consumed in Processing</option><option>Transfer Between Units</option><option>Adjustment</option></select></div><div class="fg"><label class="fl">Unit</label><select class="fi"><option>Unit 1 — Kisan Agro</option><option>Unit 2 — Oleochem</option><option>Unit 3 — Proteins</option></select></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Material</label><select class="fi"><option>Castor Seeds</option><option>Groundnut Seeds</option><option>Hexane (Solvent)</option><option>Bleaching Earth</option><option>Activated Carbon</option><option>Caustic Soda</option><option>MS Drums 200L</option><option>HDPE Bags 50kg</option></select></div><div class="fg"><label class="fl">Quantity</label><input class="fi" type="number" placeholder="e.g. 500"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Date</label><input class="fi" type="date"></div><div class="fg"><label class="fl">PO Reference</label><input class="fi" placeholder="e.g. PO-7721"></div></div>
+  <div class="fg"><label class="fl">Remarks</label><input class="fi" placeholder="e.g. Received from Banaskantha Co-op, Lot 8821"></div>
+  <div class="ma"><button class="btn bo" onclick="closeM('m-stk')">Cancel</button><button class="btn bp" onclick="closeM('m-stk')">💾 Save Entry</button></div>
+</div></div>
+
+<!-- PURCHASE ORDER -->
+<div class="mo" id="m-pur"><div class="mb">
+  <div class="mt">🏪 New Purchase Order <span class="mc" onclick="closeM('m-pur')">×</span></div>
+  <div class="fsec">Supplier Details</div>
+  <div class="fr"><div class="fg"><label class="fl">Supplier Name</label><input class="fi" placeholder="e.g. HPCL / Ashapura Minechem"></div><div class="fg"><label class="fl">Supplier GSTIN</label><input class="fi" placeholder="e.g. 27XXXXXXX"></div></div>
+  <div class="fsec">Material Details</div>
+  <div class="fr"><div class="fg"><label class="fl">Material</label><select class="fi"><option>Hexane (Solvent)</option><option>Bleaching Earth</option><option>Activated Carbon</option><option>Caustic Soda (NaOH)</option><option>Phosphoric Acid</option><option>MS Drums 200L</option><option>HDPE Bags 50kg</option><option>Groundnut Seeds</option></select></div><div class="fg"><label class="fl">Quantity</label><input class="fi" type="number" placeholder="e.g. 80 KL or 100 MT"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Rate (₹/unit)</label><input class="fi" type="number" placeholder="e.g. 68000"></div><div class="fg"><label class="fl">Deliver To</label><select class="fi"><option>Unit 1 — Kisan Agro</option><option>Unit 2 — Oleochem</option><option>Unit 3 — Proteins</option></select></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Expected Delivery</label><input class="fi" type="date"></div><div class="fg"><label class="fl">Payment Terms</label><select class="fi"><option>Advance</option><option>On Delivery</option><option>15 Days Credit</option><option>30 Days Credit</option></select></div></div>
+  <div class="ma"><button class="btn bo" onclick="closeM('m-pur')">Cancel</button><button class="btn bp" onclick="closeM('m-pur')">💾 Raise PO</button></div>
+</div></div>
+
+<!-- SALES ORDER -->
+<div class="mo" id="m-order"><div class="mb">
+  <div class="mt">🛒 New Sales Order <span class="mc" onclick="closeM('m-order')">×</span></div>
+  <div class="fsec">Customer</div>
+  <div class="fr"><div class="fg"><label class="fl">Customer Name</label><input class="fi" placeholder="e.g. Asian Paints Ltd."></div><div class="fg"><label class="fl">Order Type</label><select class="fi"><option>Domestic</option><option>Export</option></select></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Country / State</label><input class="fi" placeholder="e.g. Maharashtra / USA"></div><div class="fg"><label class="fl">GSTIN / Country Code</label><input class="fi" placeholder="e.g. 27AAACA8497P1ZV"></div></div>
+  <div class="fsec">Product Details</div>
+  <div class="fr"><div class="fg"><label class="fl">Product</label><select class="fi"><option>Castor Oil FSG</option><option>Organic Castor Oil (USDA)</option><option>Hydrogenated Castor Oil</option><option>DCOFA (C18:2)</option><option>Ricinoleic Acid</option><option>Blown Castor Oil</option><option>De-Oiled Castor Cake</option><option>Biomass Pellets</option><option>Refined GN Oil</option><option>Groundnut Bold</option></select></div><div class="fg"><label class="fl">Quantity (MT)</label><input class="fi" type="number" placeholder="e.g. 150"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Rate (₹ or $/MT)</label><input class="fi" placeholder="e.g. ₹1,10,000 or $1,450"></div><div class="fg"><label class="fl">Incoterm (Export)</label><select class="fi"><option>N/A — Domestic</option><option>FOB — Mundra</option><option>FOB — JNPT</option><option>CIF</option><option>CFR</option></select></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Required Delivery Date</label><input class="fi" type="date"></div><div class="fg"><label class="fl">Processing Unit</label><select class="fi"><option>Unit 1 — Kisan Agro</option><option>Unit 2 — Oleochem</option><option>Unit 3 — Proteins</option></select></div></div>
+  <div class="fg"><label class="fl">Special Requirements</label><input class="fi" placeholder="e.g. USDA Organic COA required, Drum packing, IS 1299 certificate"></div>
+  <div class="ma"><button class="btn bo" onclick="closeM('m-order')">Cancel</button><button class="btn bp" onclick="closeM('m-order')">💾 Save Order</button></div>
+</div></div>
+
+<!-- EXPORT SHIPMENT -->
+<div class="mo" id="m-exp"><div class="mb">
+  <div class="mt">🌍 New Export Shipment <span class="mc" onclick="closeM('m-exp')">×</span></div>
+  <div class="fr"><div class="fg"><label class="fl">Export Order Ref</label><input class="fi" placeholder="e.g. #EX-1841"></div><div class="fg"><label class="fl">Buyer</label><input class="fi" placeholder="e.g. Sovereign Chemicals Corp."></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Destination Country</label><select class="fi"><option>USA</option><option>Netherlands (EU)</option><option>Japan</option><option>China</option><option>Australia</option><option>Thailand</option></select></div><div class="fg"><label class="fl">Port of Loading</label><select class="fi"><option>Mundra Port</option><option>JNPT (Mumbai)</option><option>Kandla</option></select></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Product & Grade</label><input class="fi" placeholder="e.g. Organic Castor Oil — USDA NOP"></div><div class="fg"><label class="fl">Quantity (MT)</label><input class="fi" type="number" placeholder="e.g. 200"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Incoterm</label><select class="fi"><option>FOB</option><option>CIF</option><option>CFR</option></select></div><div class="fg"><label class="fl">Payment Mode</label><select class="fi"><option>LC (Letter of Credit)</option><option>TT (Telegraphic Transfer)</option><option>DP (Documents against Payment)</option></select></div></div>
+  <div class="fr"><div class="fg"><label class="fl">ETD (Est. Departure)</label><input class="fi" type="date"></div><div class="fg"><label class="fl">Container Type</label><select class="fi"><option>20' FCL</option><option>40' FCL</option><option>Flexi Tank</option><option>ISO Tank</option></select></div></div>
+  <div class="fg"><label class="fl">Required Documents</label><select class="fi" multiple style="height:80px"><option selected>Commercial Invoice</option><option selected>Packing List</option><option selected>COA (Certificate of Analysis)</option><option>USDA Organic Certificate</option><option>Phytosanitary Certificate</option><option>Bill of Lading</option></select></div>
+  <div class="ma"><button class="btn bo" onclick="closeM('m-exp')">Cancel</button><button class="btn bp" onclick="closeM('m-exp')">💾 Create Shipment</button></div>
+</div></div>
+
+<!-- DISPATCH -->
+<div class="mo" id="m-disp"><div class="mb">
+  <div class="mt">🚚 Create Dispatch Order <span class="mc" onclick="closeM('m-disp')">×</span></div>
+  <div class="fr"><div class="fg"><label class="fl">Order Ref</label><input class="fi" placeholder="e.g. #SO-4421 or #EX-1841"></div><div class="fg"><label class="fl">Customer</label><input class="fi" placeholder="Auto-filled from order"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Product</label><input class="fi" placeholder="e.g. Castor Oil FSG"></div><div class="fg"><label class="fl">Quantity (MT)</label><input class="fi" type="number" placeholder="e.g. 150"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Packing Type</label><select class="fi"><option>200L MS Drums</option><option>Flexi Tank / ISO Tank</option><option>Bulk Tanker</option><option>40kg / 50kg Bags</option><option>Container (Export)</option></select></div><div class="fg"><label class="fl">No. of Drums / Units</label><input class="fi" type="number" placeholder="e.g. 750 drums"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Vehicle / Container No.</label><input class="fi" placeholder="e.g. GJ-01-T-4421 or MAEU-XXXXXXXX"></div><div class="fg"><label class="fl">Driver Name</label><input class="fi" placeholder="e.g. Suresh Nayak"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Dispatch Date & Time</label><input class="fi" type="datetime-local"></div><div class="fg"><label class="fl">Delivery Address</label><input class="fi" placeholder="e.g. Asian Paints, Bhandup, Mumbai"></div></div>
+  <div style="padding:9px;background:rgba(21,101,192,.06);border:1px solid rgba(21,101,192,.2);border-radius:7px;font-size:11px;color:var(--bll)">ℹ️ E-Way Bill auto-generated for consignments ≥ ₹50,000</div>
+  <div class="ma"><button class="btn bo" onclick="closeM('m-disp')">Cancel</button><button class="btn bp" onclick="closeM('m-disp')">🚚 Create Dispatch</button></div>
+</div></div>
+
+<!-- INVOICE -->
+<div class="mo" id="m-inv"><div class="mb">
+  <div class="mt">🧾 Generate Invoice <span class="mc" onclick="closeM('m-inv')">×</span></div>
+  <div class="fr"><div class="fg"><label class="fl">Order Ref</label><input class="fi" value="#SO-4421"></div><div class="fg"><label class="fl">Invoice Type</label><select class="fi"><option>GST Tax Invoice (Domestic)</option><option>Commercial Invoice (Export)</option><option>Proforma Invoice</option></select></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Customer</label><input class="fi" value="Asian Paints Ltd."></div><div class="fg"><label class="fl">GSTIN / Country</label><input class="fi" value="27AAACA8497P1ZV"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Product (HSN 1515)</label><input class="fi" value="Castor Oil FSG, IS 1299"></div><div class="fg"><label class="fl">Quantity (MT)</label><input class="fi" value="150"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Rate (₹/MT)</label><input class="fi" value="110000"></div><div class="fg"><label class="fl">GST Rate</label><select class="fi"><option>12% IGST (Interstate)</option><option>18% CGST+SGST (Intra-GJ)</option><option>0% (Export — LUT)</option></select></div></div>
+  <div style="background:var(--sf2);border-radius:9px;padding:13px;margin:6px 0;">
+    <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px"><span style="color:var(--tx2)">Taxable Amount</span><span style="font-weight:600">₹1,65,00,000</span></div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px"><span style="color:var(--tx2)">IGST @ 12%</span><span>₹19,80,000</span></div>
+    <div style="display:flex;justify-content:space-between;border-top:1px solid var(--br);padding-top:8px;margin-top:4px"><span style="font-weight:700;color:var(--gnl);font-size:13px">Total Invoice</span><span style="font-weight:700;color:var(--gnl);font-size:16px">₹1,84,80,000</span></div>
+  </div>
+  <div class="ma"><button class="btn bo" onclick="closeM('m-inv')">Cancel</button><button class="btn bo" onclick="closeM('m-inv');showPage('invoice',null)">👁️ Preview</button><button class="btn bp" onclick="closeM('m-inv')">💾 Generate & Send</button></div>
+</div></div>
+
+<!-- EMPLOYEE -->
+<div class="mo" id="m-emp"><div class="mb">
+  <div class="mt">👷 Add Employee <span class="mc" onclick="closeM('m-emp')">×</span></div>
+  <div class="fr"><div class="fg"><label class="fl">Full Name</label><input class="fi" placeholder="e.g. Ramesh Patel"></div><div class="fg"><label class="fl">Employee ID</label><input class="fi" placeholder="Auto: KAP-XXX"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Designation</label><select class="fi"><option>Processing Operator</option><option>Lab Technician / QC</option><option>Plant Supervisor</option><option>Store Incharge</option><option>Dispatch Staff</option><option>Maintenance Tech</option><option>Export / Office Admin</option><option>Accountant</option></select></div><div class="fg"><label class="fl">Unit</label><select class="fi"><option>Unit 1 — Kisan Agro</option><option>Unit 2 — Oleochem</option><option>Unit 3 — Proteins</option></select></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Basic Salary (₹/month)</label><input class="fi" type="number" placeholder="e.g. 18000"></div><div class="fg"><label class="fl">Mobile</label><input class="fi" placeholder="98XXXXXXXX"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Aadhaar No.</label><input class="fi" placeholder="XXXX XXXX XXXX"></div><div class="fg"><label class="fl">Joining Date</label><input class="fi" type="date"></div></div>
+  <div class="ma"><button class="btn bo" onclick="closeM('m-emp')">Cancel</button><button class="btn bp" onclick="closeM('m-emp')">💾 Add Employee</button></div>
+</div></div>
+
+<!-- ADD USER -->
+<div class="mo" id="m-user"><div class="mb">
+  <div class="mt">👥 Add ERP User <span class="mc" onclick="closeM('m-user')">×</span></div>
+  <div class="fr"><div class="fg"><label class="fl">Full Name</label><input class="fi" placeholder="e.g. Suresh Mehta"></div><div class="fg"><label class="fl">Username</label><input class="fi" placeholder="e.g. suresh.mehta"></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Role</label><select class="fi"><option>Super Admin</option><option>Export Manager</option><option>Plant Supervisor</option><option>QC Manager</option><option>Accountant</option><option>Store Incharge</option><option>View Only</option></select></div><div class="fg"><label class="fl">Access Unit</label><select class="fi"><option>All Units</option><option>Unit 1 — Kisan Agro</option><option>Unit 2 — Oleochem</option><option>Unit 3 — Proteins</option></select></div></div>
+  <div class="fr"><div class="fg"><label class="fl">Email</label><input class="fi" placeholder="e.g. suresh@kisanagro.com"></div><div class="fg"><label class="fl">Mobile (OTP)</label><input class="fi" placeholder="98XXXXXXXX"></div></div>
+  <div style="padding:9px;background:rgba(46,139,46,.08);border:1px solid rgba(46,139,46,.2);border-radius:7px;font-size:11px;color:var(--gnl)">🔐 Login credentials will be sent via SMS on creation</div>
+  <div class="ma"><button class="btn bo" onclick="closeM('m-user')">Cancel</button><button class="btn bp" onclick="closeM('m-user')">💾 Create User</button></div>
+</div></div>
+
+<script>
+function doLogin(){document.getElementById('ls').style.display='none';document.getElementById('app').style.display='block';}
+function doLogout(){document.getElementById('app').style.display='none';document.getElementById('ls').style.display='flex';}
+function updateClock(){const n=new Date();document.getElementById('clock').textContent=n.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
+setInterval(updateClock,1000);updateClock();
+function showPage(id,el){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  const p=document.getElementById('page-'+id);if(p)p.classList.add('on');
+  if(el){document.querySelectorAll('.si').forEach(s=>s.classList.remove('on'));el.classList.add('on');}
+}
+function setUnit(el){document.querySelectorAll('.utab').forEach(t=>t.classList.remove('on'));el.classList.add('on');}
+function openM(id){document.getElementById(id).classList.add('on');}
+function closeM(id){document.getElementById(id).classList.remove('on');}
+document.addEventListener('click',e=>{if(e.target.classList.contains('mo'))e.target.classList.remove('on');});
+function switchStab(el,pid){
+  document.querySelectorAll('.stab').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.spnl').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');document.getElementById(pid).classList.add('on');
+}
+function switchItab(el,pid){
+  const par=el.closest('.itbs');
+  par.querySelectorAll('.itb').forEach(t=>t.classList.remove('on'));el.classList.add('on');
+  document.querySelectorAll('.itp').forEach(p=>p.classList.remove('on'));
+  document.getElementById(pid).classList.add('on');
+}
+</script>
+</body></html>
